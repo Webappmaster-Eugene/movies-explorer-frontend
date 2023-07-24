@@ -1,0 +1,17 @@
+@import "../../vars.scss";
+
+.templateName {
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  max-width: 1200px;
+  width: 100%;
+
+  p {
+    @include classicText($fsizeBig, 1.5, #000000, right);
+  }
+  
+  @media (max-width: 900px) {
+
+  }
+}

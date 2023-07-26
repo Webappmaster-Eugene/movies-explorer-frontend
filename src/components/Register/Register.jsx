@@ -15,7 +15,7 @@ const Register = ({ isLogedIn, userInfo, setUserInfo, setLogedIn }) => {
     if (isLogedIn) {
       navigate('/movies', { replace: true });
     }
-  }, []);
+  });
 
   const [userName, setUserName] = useState('');
   const [userPassword, setUserPassword] = useState('');
@@ -95,8 +95,10 @@ const Register = ({ isLogedIn, userInfo, setUserInfo, setLogedIn }) => {
   return (
     <section className={styles.register}>
       <div className={`${styles.register__top}`}>
-        <img src={logo} alt="Логотип сайта" className={logo} />
-        <h2 className={styles.register__header}>Добро пожаловать!</h2>
+        <Link to="/">
+          <img src={logo} alt="Логотип сайта" className={logo} />
+        </Link>
+        <h1 className={styles.register__header}>Добро пожаловать!</h1>
       </div>
 
       <form className={`${styles.register__form}`}>
@@ -166,7 +168,7 @@ const Register = ({ isLogedIn, userInfo, setUserInfo, setLogedIn }) => {
         </div>
 
         <div className={styles.register__buttons}>
-          <button onClick={onSignUp} className={`${styles.register__button}`}>
+          <button type="button" onClick={onSignUp} className={`${styles.register__button}`}>
             Зарегистрироваться
           </button>
 

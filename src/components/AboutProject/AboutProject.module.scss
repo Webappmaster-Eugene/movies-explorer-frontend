@@ -2,9 +2,8 @@
 
 .landingBlock {
   @include classicDiv(column);
-  max-width: 1140px;
+  max-width: 1280px;
   width: 100%;
-  box-sizing: border-box;
   padding: 0 70px;
 
   @media screen and (max-width: 800px) {
@@ -19,14 +18,16 @@
 .aboutproject{
   .slide{
     @include classicDiv(column);
+    max-width: 1140px;
     width: 100%;
     align-items: flex-start;
-  
 
       .slide__header{
         @include classicText($fsH2, $fwRegular, $lhH2, $blackColor, left);
         margin-top: 110px;
-
+        letter-spacing: -1px;
+        width: 100%;
+        
         @media screen and (max-width: 800px) {
           margin-top: 90px;
         }
@@ -37,11 +38,17 @@
         }
       }
 
-      .slide__line{
+      .slide__header::after{
+        content: "";
+        display: flex;
+        margin: 0;
+        padding: 0;
         margin-top: 23px;
         width: 100%;
         box-sizing: border-box;
-        border: 0.5px solid $blackColor;
+        height: 1px;
+        background-color: $blackColor;
+
 
         @media screen and (max-width: 500px) {
           margin-top: 28px;
@@ -64,7 +71,6 @@
     @media screen and (max-width: 500px) {
       @include classicDiv(column);
       justify-content: center;
-      //align-items: flex-start;
       padding: 60px 0 60px 0;
       gap: 56px;
     }
@@ -75,13 +81,20 @@
     justify-content: space-between;
     align-items: flex-start;
     gap: 26px;
+    max-width: 50%;
 
     @media screen and (max-width: 800px) {
       gap: 22px;
     }
 
+    @media screen and (max-width: 600px) {
+      max-width: 100%;
+      gap: 16px;
+    }
+
     .article__header{
       @include classicText($fsH3, $fwRegular, $lhH3, $blackColor, left);
+      letter-spacing: -0.8px;
 
       @media screen and (max-width: 500px) {
         @include classicText($fsText2, $fwRegular, $lhText2, $blackColor, left);
@@ -90,6 +103,7 @@
 
     .article__text{
       @include classicText($fsText, $fwRegular, $lhText, $blackColor, left);
+      letter-spacing: -0.3px;
 
       @media screen and (max-width: 800px) {
         @include classicText($fsButton, $fwRegular, $lhPlaceholder, $blackColor, left);

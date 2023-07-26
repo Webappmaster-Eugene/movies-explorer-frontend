@@ -38,22 +38,28 @@
     }
 
     @media screen and (max-width: 450px) {
-      margin-bottom: 379px;
-      width: 100%;
+      margin-bottom: 300px;
     }
-  }
-
-  .profile__divider{
-    width: 100%;
-    height: 1px;
-    background-color: $lineColor;
-    box-sizing: border-box;
   }
 
   .profile__blockinfo{
     @include classicDiv(row);
     justify-content: space-between;
     width: 100%;
+  }
+
+  // .profile__blockinfo_top::after{
+  //   content: "";
+  //   display: block;
+  //   width: 100%;
+  //   height: 1px;
+  //   background-color: $lineColor;
+  //   box-sizing: border-box;
+  // }
+
+    .profile__blockinfo_top{
+      padding-bottom: 16px;
+      border-bottom: 1px solid $lineColor;
   }
 
   .profile__text{
@@ -67,7 +73,6 @@
   .profile__buttons{
     @include classicDiv(column);
     gap: 16px;
-
   }
 
   .profile__button{
@@ -92,7 +97,6 @@
     right: 0;
     left: 0;
     display: none;
-
 
     .popup__container{
       @include classicDiv(column);
@@ -168,6 +172,7 @@
         width: 100%;
 
         &:focus {
+          box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.5);
           outline: rgba(105, 105, 105, 0.818) 1px auto;
         }
 

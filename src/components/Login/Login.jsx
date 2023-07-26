@@ -75,7 +75,7 @@ const Login = ({ isLogedIn, userInfo, setLogedIn }) => {
     <section className={styles.register}>
       <div className={`${styles.register__top}`}>
         <img src={logo} alt="Логотип сайта" className={logo} />
-        <h2 className={styles.register__header}>Рады видеть!</h2>
+        <h1 className={styles.register__header}>Рады видеть!</h1>
       </div>
 
       <form className={`${styles.register__form}`}>
@@ -127,6 +127,7 @@ const Login = ({ isLogedIn, userInfo, setLogedIn }) => {
           <button
             disabled={isErrorUserPassword || isErrorUserEmail}
             onClick={onLogIn}
+            type="button"
             className={`${styles.register__button}`}>
             Войти
           </button>

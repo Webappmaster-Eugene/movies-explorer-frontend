@@ -50,6 +50,7 @@
   }
 
   .card__right{
+    all: unset;
     @include classicDiv(row);
     min-width: 30px;
     min-height: 30px;

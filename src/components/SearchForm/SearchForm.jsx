@@ -28,8 +28,8 @@ const SearchForm = () => {
 
   return (
     <div className={styles.searchform}>
-      <div className={styles.searchform__searching}>
-        <form className={styles.searchform__form}>
+      <form className={styles.searchform__searching}>
+        <div className={styles.searchform__form}>
           <input
             className={styles.searchform__input}
             type="text"
@@ -45,7 +45,7 @@ const SearchForm = () => {
               alt="поиск фильмов"
             />
           </button>
-        </form>
+        </div>
 
         <div className={styles.searchform__shortsContainer}>
           <p className={styles.searchform__shortsText}>Короткометражки</p>
@@ -60,9 +60,9 @@ const SearchForm = () => {
             <span className={styles.searchform__shortsSlider} />
           </label>
         </div>
-      </div>
+      </form>
 
-      <div className={styles.searchform__dividingLine}></div>
+      {/* <div className={styles.searchform__dividingLine}></div> */}
     </div>
   );
 };

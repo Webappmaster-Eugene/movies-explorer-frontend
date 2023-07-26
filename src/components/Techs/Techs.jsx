@@ -5,11 +5,10 @@ const Techs = () => {
     <section id="techs" className={`${styles.landingBlock} ${styles.techs}`}>
       <div className={styles.slide}>
         <h2 className={styles.slide__header}>Технологии</h2>
-        <div className={styles.slide__line}></div>
       </div>
 
       <div className={styles.techs__info}>
-        <h2 className={styles.techs__header}>7 технологий</h2>
+        <h3 className={styles.techs__header}>7 технологий</h3>
         <p className={styles.techs__text}>
           На курсе веб-разработки мы освоили технологии, которые применили в дипломном проекте.
         </p>

@@ -36,7 +36,13 @@
 
 .notfound__link{
   @include classicText($fsText, $fwRegular, $lhCaption, $greenColor, center);
+  transition: all 0.3s ease-out;
+  cursor: pointer;
 
+  &:hover {
+    opacity: .7;
+  }
+  
   @media screen and (max-width: 500px) {
     @include classicText($fsButton, $fwRegular, $lhButtonEtc, $greenColor, center);
   }

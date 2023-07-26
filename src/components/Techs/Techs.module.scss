@@ -2,7 +2,7 @@
 
 .landingBlock {
   @include classicDiv(column);
-  max-width: 1140px;
+  max-width: 1280px;
   width: 100%;
   box-sizing: border-box;
   padding: 0 70px;
@@ -19,12 +19,14 @@
 .slide{
   @include classicDiv(column);
   width: 100%;
+  max-width: 1140px;
   align-items: flex-start;
   background-color: $fillColor;
 
     .slide__header{
       @include classicText($fsH2, $fwRegular, $lhH2, $blackColor, left);
-      margin-top: 110px;
+      margin-top: 100px;
+      width: 100%;
 
       @media screen and (max-width: 800px) {
         margin-top: 90px;
@@ -36,11 +38,18 @@
       }
     }
 
-    .slide__line{
+
+    .slide__header::after{
+      content: "";
+      display: flex;
+      margin: 0;
+      padding: 0;
       margin-top: 23px;
       width: 100%;
       box-sizing: border-box;
-      border: 0.5px solid $blackColor;
+      height: 1px;
+      background-color: $blackColor;
+
 
       @media screen and (max-width: 500px) {
         margin-top: 28px;
@@ -71,6 +80,7 @@
 
   .techs__header{
     @include classicText($fsH1, $fwRegular, $lhH1, $blackColor, center);
+    letter-spacing: -1px;
 
     @media screen and (max-width: 500px) {
       @include classicText($fsBigLinks, $fwRegular, $lhMobileName, $blackColor, center);
@@ -96,7 +106,7 @@
     flex-direction: row;
     justify-content: center;
     gap: 10px;
-    margin-bottom: 100px;
+    margin-bottom: 90px;
     flex-wrap: wrap;
 
     @media screen and (max-width: 800px) {

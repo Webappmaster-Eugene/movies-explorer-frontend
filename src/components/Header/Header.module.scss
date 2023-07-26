@@ -1,5 +1,16 @@
 @import "../../vars.scss";
 
+.logo{
+  width: 38px;
+  height: 38px;
+  transition: all 0.3s ease-out;
+
+  cursor: pointer;
+  &:hover {
+    opacity: .7;
+  }
+}
+
 .header {
   display: flex;
   max-width: 1280px;
@@ -18,20 +29,5 @@
 
   @media screen and (max-width: 500px) {
     padding: 0 14px 0 14px;
-  }
-
-  .logo {
-    width: 38px;
-    height: 38px;
-    transition: all 0.3s ease-out;
-    cursor: pointer;
-    
-    &:focus {
-      outline: blue 1px auto;
-    }
-    
-    &:hover {
-      opacity: .7;
-    }
   }
 }

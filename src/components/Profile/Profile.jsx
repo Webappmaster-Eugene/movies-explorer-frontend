@@ -87,8 +87,6 @@ const Profile = ({ setUserInfo, setLogedIn }) => {
           <p className={`${styles.profile__text} ${styles.profile__topvalue}`}>{context.name}</p>
         </div>
 
-        <span className={styles.profile__divider}></span>
-
         <div className={`${styles.profile__blockinfo} ${styles.profile__blockinfo_bottom}`}>
           <p className={`${styles.profile__text} ${styles.profile__bottomhead}`}>E-mail</p>
           <p className={`${styles.profile__text} ${styles.profile__bottomvalue}`}>
@@ -100,6 +98,7 @@ const Profile = ({ setUserInfo, setLogedIn }) => {
       <div className={styles.profile__buttons}>
         <button
           onClick={onEditClick}
+          type="button"
           className={`${styles.profile__button} ${styles.profile__buttonEdit}`}>
           Редактировать
         </button>

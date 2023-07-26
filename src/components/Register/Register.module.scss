@@ -61,7 +61,7 @@
 
 .register__inputs{
   @include classicDiv(column);
-  gap: 10px;
+  gap: 20px;
   width: 100%;
 
   .inputElement{
@@ -72,21 +72,22 @@
     width: 100%;
 
     .inputElement__label{
-      @include classicText($fsLoginCaption, $fwMedium, $lhLoginCaption, $grayColor, left);
+      @include classicText($fsLoginCaption, $fwRegular, $lhLoginCaption, $grayColor, left);
       width: 100%;
     }
 
     .inputElement__input{
-      @include classicText($fsLoginCaption, $fwMedium, $lhLoginCaption, $blackColor, left);
+      @include classicText($fsCaptionFooter, $fwMedium, $lhCaptionFooter, $blackColor, left);
+      box-sizing: border-box;
       width: 100%;
       border: none;
       border-radius: 8px;
       height: 46px;
       background-color: #F9F9F9;
       padding-left: 15px;
-      box-sizing: border-box;
 
       &:focus {
+        box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.5);
         outline: rgba(105, 105, 105, 0.818) 1px auto;
       }
 
@@ -97,12 +98,15 @@
 
     .inputElement__inputError{
       opacity: 0;
+      display: none;
       @include classicText($fsLoginCaption, $fwRegular, $lhCaptionImages, $redColor, left);
       height: 28px;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
     .inputElement__inputError_active{
       opacity: 1;
+      display: flex;
     }
   }
 }

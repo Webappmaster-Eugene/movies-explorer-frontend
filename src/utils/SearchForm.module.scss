@@ -43,10 +43,10 @@
     width: 100%;
     @include classicDiv(row);
     position: relative;
-    
+
     .searchform__input{
       width: 100%;
-      display: grid;
+      display: flex;
       outline: none;
       box-sizing: border-box;
       border: 1.5px solid #AAAAAA;

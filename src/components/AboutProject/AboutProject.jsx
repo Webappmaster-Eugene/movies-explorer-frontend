@@ -5,7 +5,6 @@ const AboutProject = () => {
     <section id="about-project" className={`${styles.landingBlock} ${styles.aboutproject}`}>
       <div className={styles.slide}>
         <h2 className={styles.slide__header}>О проекте</h2>
-        <div className={styles.slide__line}></div>
       </div>
 
       <div className={styles.articles}>

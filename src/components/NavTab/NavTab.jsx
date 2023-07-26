@@ -2,7 +2,7 @@ import styles from './NavTab.module.scss';
 
 const NavTab = () => {
   return (
-    <div className={styles.navtab}>
+    <nav className={styles.navtab}>
       <a className={styles.navtab__link} href="#about-project">
         О проекте
       </a>
@@ -12,7 +12,7 @@ const NavTab = () => {
       <a className={styles.navtab__link} href="#about-me">
         Студент
       </a>
-    </div>
+    </nav>
   );
 };
 

@@ -8,7 +8,7 @@
   box-sizing: border-box;
 
   @media screen and (max-width: 730px) {
-    padding: 70px 0 0 0;
+    padding: 40px 0 0 0;
     gap: 40px;
   }
 }
@@ -19,13 +19,12 @@
   width: 100%;
   gap: 30px 24px;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: flex-start;
   align-content: flex-start;
   box-sizing: border-box;
 
   @media screen and (max-width: 1100px) {
-    justify-content: space-between;
     gap: 22px 22px;
   }
 
@@ -40,7 +39,6 @@
   }
 
   @media screen and (max-width: 730px) {
-    justify-content: center;
     gap: 16px;
     padding: 0 10px 0 10px;
   }
@@ -48,7 +46,9 @@
 
 .movies__etc{
   @include classicDiv(row);
-  height: 166px;
+  max-height: 166px;
+  min-height: 140px;
+  margin-bottom: 25px;
 
   .movies__textetc{
     all: unset;
@@ -59,7 +59,6 @@
     height: 36px;
     background-color: #F9F9F9;
     border-radius: 6px;
-    padding-top: 11px;
     padding-top: 11px;
     box-sizing: border-box;
     cursor: pointer;

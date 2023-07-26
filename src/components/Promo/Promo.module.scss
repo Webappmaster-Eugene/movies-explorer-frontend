@@ -7,18 +7,17 @@
   width: 100%;
   align-items: center;
   margin: 0 auto;
-  padding: 0 40px 0 40px;
+  padding: 20px 40px 0 40px;
   box-sizing: border-box;
   min-height: 493px;
 
   @media screen and (max-width: 800px) {
-    max-height: 834px;
-    padding: 0 20px 0 20px;
+    box-sizing: border-box;
+    padding: 20px 20px 0 20px;
   }
 
   @media screen and (max-width: 500px) {
-    max-height: 586px;
-    padding: 0 14px 0 14px;
+    padding: 14px 14px 0 14px;
   }
 
   .promo__container {
@@ -33,9 +32,19 @@
     border-radius: 10px;
     box-sizing: border-box;
   
+    @media screen and (max-width: 800px) {
+      gap: 314px;
+    }
+
+    @media screen and (max-width: 500px) {
+      gap: 212px;
+    }
+
     .header {
       @include classicText($fsH1, $fwRegular, $lhH1, $blackColor, center);
       margin-top: 160px;
+      max-width: 730px;
+      letter-spacing: -1px;
 
       @media screen and (max-width: 800px) {
         @include classicText($fsTabletH1, $fwRegular, $lhTabletH1, $blackColor, center);

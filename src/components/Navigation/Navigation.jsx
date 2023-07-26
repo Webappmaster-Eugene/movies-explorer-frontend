@@ -29,8 +29,8 @@ const Navigation = ({ pathname, logedIn }) => {
         </div>
       ) : (
         <div className={styles.menu}>
-          <div className={`${styles.nav} ${isBurgerOpen && styles.nav_active}`}>
-            <div className={`${styles.nav__toplinks}`}>
+          <nav className={`${styles.nav} ${isBurgerOpen && styles.nav_active}`}>
+            <nav className={`${styles.nav__toplinks}`}>
               <Link
                 onClick={chooseMenuItem}
                 to="/"
@@ -57,9 +57,9 @@ const Navigation = ({ pathname, logedIn }) => {
                 } ${styles.menu__toplink_saved}`}>
                 Сохраненные фильмы
               </Link>
-            </div>
+            </nav>
 
-            <div className={`${styles.nav__bottomlinks}`}>
+            <nav className={`${styles.nav__bottomlinks}`}>
               <Link
                 to="/profile"
                 onClick={chooseMenuItem}
@@ -72,12 +72,12 @@ const Navigation = ({ pathname, logedIn }) => {
                   src={accountimage}
                   alt="переход к профилю пользователю"></img>
               </Link>
-            </div>
-          </div>
+            </nav>
+          </nav>
 
           <div className={`${styles.blackout} ${isBurgerOpen && styles.blackout_active}`}></div>
 
-          <div className={styles.menu__links}>
+          <nav className={styles.menu__links}>
             <Link
               to="/movies"
               className={`${styles.menu__link} ${
@@ -105,12 +105,12 @@ const Navigation = ({ pathname, logedIn }) => {
                 src={accountimage}
                 alt="переход к профилю пользователю"></img>
             </Link>
-          </div>
+          </nav>
 
           <button
             onClick={clickBurger}
+            type="button"
             className={`${styles.menu__burger} ${isBurgerOpen && styles.menu__burger_active}`}>
-            {/* <button  className={styles.menu__burgerButton}> */}
             <span className={styles.menu__lines}></span>
           </button>
         </div>

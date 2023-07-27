@@ -74,7 +74,9 @@ const Login = ({ isLogedIn, userInfo, setLogedIn }) => {
   return (
     <section className={styles.register}>
       <div className={`${styles.register__top}`}>
-        <img src={logo} alt="Логотип сайта" className={logo} />
+        <Link to="/">
+          <img src={logo} alt="Логотип сайта" className={logo} />
+        </Link>
         <h1 className={styles.register__header}>Рады видеть!</h1>
       </div>
 

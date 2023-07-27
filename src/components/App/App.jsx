@@ -30,14 +30,14 @@ function App() {
   const [isErrorToolTipVisible, setIsErrorToolTipVisible] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
 
-  useEffect(() => {
-    setIsErrorToolTipVisible(true);
-    setErrorMessage('Ошибка при запросе API');
-    setTimeout(() => {
-      setIsErrorToolTipVisible(false);
-      setErrorMessage('');
-    }, 4000);
-  });
+  // useEffect(() => {
+  //   setIsErrorToolTipVisible(true);
+  //   setErrorMessage('Ошибка при запросе API');
+  //   setTimeout(() => {
+  //     setIsErrorToolTipVisible(false);
+  //     setErrorMessage('');
+  //   }, 4000);
+  // });
 
   return (
     <CurrentUserContext.Provider value={userInfo}>

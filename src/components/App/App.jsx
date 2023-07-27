@@ -22,7 +22,7 @@ import styles from './App.module.scss';
 function App() {
   const { pathname } = useLocation();
   const [userInfo, setUserInfo] = React.useState({
-    name: 'Булат',
+    name: 'Василий',
     email: 'bulat@mail.com',
     password: '!qwertY1',
   });

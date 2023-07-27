@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
@@ -9,6 +9,7 @@ import { savedFilms } from '../../utils/fakedb';
 import Header from '../Header';
 import Footer from '../Footer';
 import Main from '../Main';
+import ErrorToolTip from '../ErrorToolTip';
 import Movies from '../Movies';
 import SavedMovies from '../SavedMovies';
 import Register from '../Register';
@@ -26,6 +27,17 @@ function App() {
     password: '!qwertY1',
   });
   const [logedIn, setLogedIn] = React.useState(true);
+  const [isErrorToolTipVisible, setIsErrorToolTipVisible] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState('');
+
+  useEffect(() => {
+    setIsErrorToolTipVisible(true);
+    setErrorMessage('Ошибка при запросе API');
+    setTimeout(() => {
+      setIsErrorToolTipVisible(false);
+      setErrorMessage('');
+    }, 4000);
+  });
 
   return (
     <CurrentUserContext.Provider value={userInfo}>
@@ -34,6 +46,9 @@ function App() {
           pathname === '/saved-movies' ||
           pathname === '/' ||
           pathname === '/profile') && <Header pathname={pathname} logedIn={logedIn} />}
+        {isErrorToolTipVisible && (
+          <ErrorToolTip isErrorToolTipVisible={isErrorToolTipVisible} errorMessage={errorMessage} />
+        )}
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/movies" element={<Movies movies={films} />} />

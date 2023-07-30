@@ -8,9 +8,7 @@ const SearchForm = () => {
   const [searchValue, setSearchValue] = useState('');
   const [isShortVideos, setIsShortVideos] = useState(false);
 
-  useEffect(() => {
-    console.log(searchValue);
-  }, [searchValue]);
+  useEffect(() => {}, [searchValue]);
 
   const onChangeSearch = (event) => {
     setSearchValue(event.target.value);

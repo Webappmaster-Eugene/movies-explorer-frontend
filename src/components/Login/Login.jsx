@@ -7,7 +7,7 @@ import { mailTester, passwordTester } from '../../utils/regEx';
 
 import styles from './Login.module.scss';
 
-const Login = ({ isLogedIn, userInfo, setLogedIn }) => {
+const Login = ({ isLogedIn, handleLoginUser }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -63,12 +63,8 @@ const Login = ({ isLogedIn, userInfo, setLogedIn }) => {
 
   const onLogIn = (event) => {
     event.preventDefault();
-    if (userPassword === userInfo.password && userEmail === userInfo.email) {
-      setLogedIn(true);
-      navigate('/movies', { replace: true });
-    } else {
-      navigate('/signup', { replace: true });
-    }
+
+    handleLoginUser({ email: userEmail, password: userPassword });
   };
 
   return (

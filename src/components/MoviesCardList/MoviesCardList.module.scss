@@ -77,3 +77,10 @@
     display: flex;
   }
 }
+
+.movies__none{
+  @include classicText(30px, $fwMedium, 29px, $blackColor, center);
+  padding: 60px 10px 5px 10px;
+  box-sizing: border-box;
+  display: flex;
+}

@@ -8,7 +8,7 @@ import Preloader from '../Preloader';
 
 import styles from './SavedMovies.module.scss';
 
-const SavedMovies = ({ movies }) => {
+const SavedMovies = ({ movies, handleDeleteMovie }) => {
   const [preloader, setPreloader] = useState(false);
   const [countFilms, setCountFilms] = useState(0);
   const windowWidth = useResize().width;
@@ -25,14 +25,8 @@ const SavedMovies = ({ movies }) => {
 
   useEffect(() => {
     setTimeout(() => {
-      setPreloader(true);
-    }, 0);
-  }, []);
-
-  useEffect(() => {
-    setTimeout(() => {
       setPreloader(false);
-    }, 4000);
+    }, 1000);
   }, []);
 
   const etcFilms = () => {
@@ -51,7 +45,13 @@ const SavedMovies = ({ movies }) => {
       {preloader ? (
         <Preloader />
       ) : (
-        <MoviesCardList etcFilms={etcFilms} countFilms={countFilms} movies={movies} />
+        <MoviesCardList
+          etcFilms={etcFilms}
+          countFilms={countFilms}
+          movies={movies}
+          handleDeleteMovie={handleDeleteMovie}
+          savedMovies={movies}
+        />
       )}
     </div>
   );

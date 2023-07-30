@@ -60,7 +60,6 @@ $fwRegular: 400;
 $fwMedium: 500;
 
 @mixin classicText($fs, $fw, $lh, $c, $ta) {
-  letter-spacing: -4%;
   font-size: $fs;
   font-weight: $fw;
   line-height: $lh;

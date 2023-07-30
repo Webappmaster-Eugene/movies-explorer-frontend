@@ -10,7 +10,7 @@ import closeIconWhite from '../../images/icon-close_white.svg';
 
 import styles from './Profile.module.scss';
 
-const Profile = ({ setUserInfo, setLogedIn }) => {
+const Profile = ({ handleUpdateUser, handleLogOut }) => {
   const [isPopupOpened, setIsPopupOpened] = useState(false);
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
@@ -30,6 +30,7 @@ const Profile = ({ setUserInfo, setLogedIn }) => {
 
   const onChangeName = (event) => {
     setUserName(event.target.value);
+
     if (event.target.value.length === 0) {
       setErrorUserName('Вы не заполнили поле имени');
       setIsErrorUserName(true);
@@ -60,22 +61,17 @@ const Profile = ({ setUserInfo, setLogedIn }) => {
   };
 
   const onSaveChanges = (event) => {
-    event.preventDefault();
-    setUserInfo({
-      name: userName,
-      email: userEmail,
-      password: context.password,
-    });
+    console.log(event);
+    handleUpdateUser({ name: userName, email: userEmail });
     onEditClick();
   };
 
-  const onEditClick = () => {
+  const onEditClick = (event) => {
     setIsPopupOpened(!isPopupOpened);
   };
 
-  const signout = () => {
-    setLogedIn(false);
-    navigate('/', { replace: true });
+  const signout = (event) => {
+    handleLogOut();
   };
 
   return (

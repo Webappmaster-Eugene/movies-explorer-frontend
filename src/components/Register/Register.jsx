@@ -8,7 +8,7 @@ import { mailTester, passwordTester } from '../../utils/regEx';
 
 import styles from './Register.module.scss';
 
-const Register = ({ isLogedIn, userInfo, setUserInfo, setLogedIn }) => {
+const Register = ({ isLogedIn, handleRegisterUser }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -67,7 +67,7 @@ const Register = ({ isLogedIn, userInfo, setUserInfo, setLogedIn }) => {
 
   const onChangeName = (event) => {
     setUserName(event.target.value);
-    console.log(userName);
+
     if (event.target.value.length === 0) {
       setIsErrorUserName(true);
       setErrorUserName('Вы не ввели Имя');
@@ -82,14 +82,8 @@ const Register = ({ isLogedIn, userInfo, setUserInfo, setLogedIn }) => {
 
   const onSignUp = (event) => {
     event.preventDefault();
-    if (userPassword === userInfo.password && userEmail === userInfo.email) {
-      alert('Данный пользователь уже существует, зайдите под данной почтой на странице входа!');
-      navigate('/signin', { replace: true });
-    } else {
-      setUserInfo({ name: userName, email: userEmail, password: userPassword });
-      setLogedIn(true);
-      navigate('/movies', { replace: true });
-    }
+    console.log({ email: userEmail, password: userPassword, name: userName });
+    handleRegisterUser({ email: userEmail, password: userPassword, name: userName });
   };
 
   return (
@@ -111,7 +105,7 @@ const Register = ({ isLogedIn, userInfo, setUserInfo, setLogedIn }) => {
               name="text"
               type="text"
               className={`${styles.inputElement__input} ${styles.inputElement__input_name}`}
-              placeholder="Виталий"
+              placeholder="Имя"
               value={userName}
               autoComplete="off"
               onChange={onChangeName}

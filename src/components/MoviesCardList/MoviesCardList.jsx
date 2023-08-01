@@ -16,8 +16,10 @@ const MoviesCardList = ({
 
   return (
     <div className={styles.movies}>
-      {!locationMovies && savedMovies.length === 0 && (
-        <h2 className={styles.movies__none}>У вас отсутствуют сохраненные фильмы</h2>
+      {(movies.length === 0 || savedMovies.length === 0) && (
+        <h2 className={styles.movies__none}>{`${
+          locationMovies ? 'Совершите поиск по фильмам' : 'У вас нет сохраненных фильмов'
+        }`}</h2>
       )}
       <div className={styles.movies__cardlist}>
         {movies

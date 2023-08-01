@@ -31,14 +31,6 @@ const MoviesCard = ({ movieInfo, handleCreateMovie, handleDeleteMovie, savedMovi
     return `${hours}ч ${min}м`;
   };
 
-  // React.useEffect(() => {
-  //   savedFilms.forEach(item => {
-  //       if (item.movieId === movieId) {
-  //           setId(item._id)
-  //       }
-  //   });
-  // }, []);
-
   const handleClickFavorite = () => {
     isFavorite
       ? handleDeleteMovie(id)
@@ -58,7 +50,7 @@ const MoviesCard = ({ movieInfo, handleCreateMovie, handleDeleteMovie, savedMovi
   };
 
   return (
-    <div className={styles.card}>
+    <a className={styles.card} href={trailerLink} target="__blank">
       <div className={styles.card__top}>
         <div className={styles.card__left}>
           <h2 className={styles.card__name}>{nameRU}</h2>
@@ -80,9 +72,9 @@ const MoviesCard = ({ movieInfo, handleCreateMovie, handleDeleteMovie, savedMovi
         <img
           className={styles.card__image}
           src={locationMovies ? image : `https://api.nomoreparties.co/${image.url}`}
-          alt={description}></img>
+          alt={description.slice(0, 30)}></img>
       </div>
-    </div>
+    </a>
   );
 };
 

@@ -1,29 +1,15 @@
-import { useState, useEffect } from 'react';
-
 import searchFormButton from '../../images/searchicon.svg';
 
 import styles from './SearchForm.module.scss';
 
-const SearchForm = () => {
-  const [searchValue, setSearchValue] = useState('');
-  const [isShortVideos, setIsShortVideos] = useState(false);
-
-  useEffect(() => {}, [searchValue]);
-
-  const onChangeSearch = (event) => {
-    setSearchValue(event.target.value);
-  };
-
-  const onChangeToggle = (event) => {
-    setIsShortVideos(!isShortVideos);
-    console.log(isShortVideos);
-  };
-
-  const onClickButtonSearch = (event) => {
-    event.preventDefault();
-    console.log(searchValue);
-  };
-
+const SearchForm = ({
+  isShortVideos,
+  onClickButtonSearch,
+  onChangeSearch,
+  onChangeToggle,
+  searchTextInputValue,
+  pathname,
+}) => {
   return (
     <div className={styles.searchform}>
       <form className={styles.searchform__searching}>
@@ -33,10 +19,19 @@ const SearchForm = () => {
             type="text"
             placeholder="Фильм"
             onChange={onChangeSearch}
-            value={searchValue}
+            value={
+              pathname === '/movies'
+                ? localStorage.getItem('searchTextInputValue')
+                : searchTextInputValue
+            }
             required
           />
-          <button className={styles.searchform__button} type="submit" onClick={onClickButtonSearch}>
+          <button
+            className={styles.searchform__button}
+            type="submit"
+            onClick={(event) => {
+              onClickButtonSearch(event);
+            }}>
             <img
               className={styles.searchform__buttonimage}
               src={searchFormButton}
@@ -50,9 +45,10 @@ const SearchForm = () => {
 
           <label className={styles.searchform__shortsButton}>
             <input
+              value={isShortVideos}
+              checked={isShortVideos ? true : false}
               type="checkbox"
               onChange={onChangeToggle}
-              defaultChecked={false}
               className={styles.searchform__shortsCheckbox}
             />
             <span className={styles.searchform__shortsSlider} />

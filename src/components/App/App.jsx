@@ -30,6 +30,8 @@ import Profile from '../Profile';
 import NotFound from '../NotFound';
 import LoadingAnimation from '../LoadingAnimation';
 
+import ProtectedRoute from '../ProtectedRoute';
+
 import styles from './App.module.scss';
 
 function App() {
@@ -39,6 +41,7 @@ function App() {
   const [isInfoToolTipVisible, setIsInfoToolTipVisible] = React.useState(false);
   const [infoMessage, setInfoMessage] = React.useState('');
   const [isLoadingVisible, setIsLoadingVisible] = React.useState(false);
+  const [isPreloaderVisible, setIsPreloaderVisible] = React.useState(false);
 
   const [logedIn, setLogedIn] = React.useState(false);
   const [userInfo, setUserInfo] = React.useState({ email: '', name: '' });
@@ -46,9 +49,8 @@ function App() {
   const [savedMovies, setSavedMovies] = React.useState([]);
   const [allMovies, setAllMovies] = React.useState([]);
 
-  // useEffect(() => {
-  //   handleGetMovies();
-  // }, []);
+  const [searchTextInputValue, setSearchTextInputValue] = React.useState('');
+  const [searchFilmsResult, setSearchFilmsResult] = React.useState([]);
 
   useEffect(() => {
     const TOKEN = localStorage.getItem('jwt');
@@ -61,6 +63,19 @@ function App() {
       navigate('/movies', { replace: true });
     }
   }, []);
+
+  // useEffect(() => {
+  //   if (localStorage.getItem('searchFilmsResult') === 'null') {
+  //     localStorage.setItem('searchFilmsResult', JSON.stringify([]));
+  //     console.log(localStorage.getItem('searchFilmsResult'));
+  //   }
+  //   if (localStorage.getItem('searchTextInputValue') === 'null') {
+  //     localStorage.setItem('searchTextInputValue', JSON.stringify(''));
+  //   }
+  //    //setSearchTextInputValue(localStorage.getItem('searchTextInputValue') || '');
+  //    //setSearchFilmsResult(JSON.parse(localStorage.getItem('searchFilmsResult')) || []);
+  //    //setIsShortVideos(localStorage.getItem('isShortVideos') === 'true' ? true : false);
+  // }, []);
 
   //Получить все фильмы из стороннего API для дальнейшей работы с ними
   async function handleGetAllMovies() {
@@ -83,16 +98,6 @@ function App() {
   }
 
   //ЮЗЕРЫ
-  // async function handleLoginTrue({ email, password }) {
-  //   console.log({ email, password });
-  //   const response = await loginUser({ email, password });
-  //   const token = await response.token;
-
-  //   localStorage.setItem('jwt', token);
-  //   setLogedIn(true);
-  //   await handleGetInfoUser();
-  //   navigate('/movies', { replace: true });
-  // }
 
   async function handleGetInfoUser() {
     setIsLoadingVisible(true);
@@ -117,7 +122,6 @@ function App() {
     setIsLoadingVisible(true);
     try {
       console.log({ email, password });
-      // await handleLoginTrue({ email, password });
       const response2 = await loginUser({ email, password });
       const token = await response2.token;
       localStorage.setItem('jwt', token);
@@ -148,7 +152,6 @@ function App() {
       setLogedIn(true);
       await handleGetInfoUser(token);
       navigate('/movies', { replace: true });
-      // await handleLoginTrue({ email: response.email, password: response.password });
     } catch (err) {
       console.log(err);
       setIsInfoToolTipVisible(true);
@@ -253,8 +256,8 @@ function App() {
   async function handleGetMovies() {
     setIsLoadingVisible(true);
     try {
+      setIsPreloaderVisible(true);
       const response = await getMovies();
-      console.log(response);
       setSavedMovies(response);
     } catch (err) {
       console.log(err);
@@ -262,6 +265,7 @@ function App() {
       setInfoMessage('Произошла ошибка при попытке получения информации о сохраненных фильмах!');
     } finally {
       setIsLoadingVisible(false);
+      setIsPreloaderVisible(false);
       isInfoToolTipVisible &&
         setTimeout(() => {
           setIsInfoToolTipVisible(false);
@@ -312,21 +316,45 @@ function App() {
           <Route
             path="/movies"
             element={
-              <Movies
+              <ProtectedRoute
+                element={Movies}
+                logedIn={logedIn}
+                isPreloaderVisible={isPreloaderVisible}
                 movies={allMovies}
                 handleCreateMovie={handleCreateMovie}
                 handleDeleteMovie={handleDeleteMovie}
                 savedMovies={savedMovies}
+                searchTextInputValue={searchTextInputValue}
+                setSearchTextInputValue={setSearchTextInputValue}
+                searchFilmsResult={searchFilmsResult}
+                setSearchFilmsResult={setSearchFilmsResult}
+                pathnam={pathname}
               />
             }
           />
           <Route
             path="/saved-movies"
-            element={<SavedMovies movies={savedMovies} handleDeleteMovie={handleDeleteMovie} />}
+            element={
+              <ProtectedRoute
+                element={SavedMovies}
+                isPreloaderVisible={isPreloaderVisible}
+                logedIn={logedIn}
+                movies={savedMovies}
+                handleDeleteMovie={handleDeleteMovie}
+                pathnam={pathname}
+              />
+            }
           />
           <Route
             path="/profile"
-            element={<Profile handleLogOut={handleLogOut} handleUpdateUser={handleUpdateUser} />}
+            element={
+              <ProtectedRoute
+                element={Profile}
+                logedIn={logedIn}
+                handleLogOut={handleLogOut}
+                handleUpdateUser={handleUpdateUser}
+              />
+            }
           />
           {!logedIn && (
             <Route

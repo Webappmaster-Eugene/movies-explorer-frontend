@@ -1,9 +1,9 @@
 # Проект: VideoCollector - авторизация, регистрация, контент, взаимодействие с сервером
 
-Ссылка на PR: https://github.com/Numarta/movies-explorer-frontend/pull/3
+Ссылка на PR: https://github.com/Numarta/movies-explorer-frontend/pull/4
 Ссылка на репо: https://github.com/Numarta/movies-explorer-frontend.git
 Ссылка на фронт сайта на сервере: numart.nomoredomains.work
-Проверено по чек-листу и полностью готово к проверке! Благодарю!
+Проверено по чек-листу и полностью готово к проверке! Баги поправлены, фичи добавлены. Благодарю!
 
 Это фронтенд проекта VideoCollector на React, HTML5, CSS3.
 

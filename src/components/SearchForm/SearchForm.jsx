@@ -20,9 +20,7 @@ const SearchForm = ({
             placeholder="Фильм"
             onChange={onChangeSearch}
             value={
-              pathname === '/movies'
-                ? localStorage.getItem('searchTextInputValue')
-                : searchTextInputValue
+              searchTextInputValue
             }
             required
           />
@@ -55,8 +53,6 @@ const SearchForm = ({
           </label>
         </div>
       </form>
-
-      {/* <div className={styles.searchform__dividingLine}></div> */}
     </div>
   );
 };

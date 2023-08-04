@@ -49,7 +49,10 @@ function App() {
   const [savedMovies, setSavedMovies] = React.useState([]);
   const [allMovies, setAllMovies] = React.useState([]);
 
-  const [searchTextInputValue, setSearchTextInputValue] = React.useState('');
+  const [searchTextInputValue, setSearchTextInputValue] = React.useState(
+    localStorage.getItem('searchTextInputValue') || '',
+  );
+
   const [searchFilmsResult, setSearchFilmsResult] = React.useState([]);
 
   useEffect(() => {
@@ -60,22 +63,9 @@ function App() {
       handleGetInfoUser();
       handleGetAllMovies();
       handleGetMovies();
-      navigate('/movies', { replace: true });
+      // navigate('/movies', { replace: true });
     }
   }, []);
-
-  // useEffect(() => {
-  //   if (localStorage.getItem('searchFilmsResult') === 'null') {
-  //     localStorage.setItem('searchFilmsResult', JSON.stringify([]));
-  //     console.log(localStorage.getItem('searchFilmsResult'));
-  //   }
-  //   if (localStorage.getItem('searchTextInputValue') === 'null') {
-  //     localStorage.setItem('searchTextInputValue', JSON.stringify(''));
-  //   }
-  //    //setSearchTextInputValue(localStorage.getItem('searchTextInputValue') || '');
-  //    //setSearchFilmsResult(JSON.parse(localStorage.getItem('searchFilmsResult')) || []);
-  //    //setIsShortVideos(localStorage.getItem('isShortVideos') === 'true' ? true : false);
-  // }, []);
 
   //Получить все фильмы из стороннего API для дальнейшей работы с ними
   async function handleGetAllMovies() {
@@ -192,6 +182,11 @@ function App() {
     try {
       setUserInfo({ email: '', name: '' });
       localStorage.removeItem('jwt');
+      localStorage.removeItem('searchTextInputValue');
+      localStorage.removeItem('searchFilmsResult');
+      localStorage.removeItem('isShortVideos');
+      setSearchFilmsResult([]);
+      setSearchTextInputValue('');
       setLogedIn(false);
       navigate('/', { replace: true });
     } catch (err) {
@@ -280,9 +275,9 @@ function App() {
       const getResponse = await getMovies();
       const findedMovieId = getResponse.filter((movie) => movie.movieId === movieId)[0]._id;
       console.log(getResponse);
-      const response = await deleteMovie(findedMovieId);
-
       setSavedMovies([...getResponse.filter((movie) => movie.movieId !== movieId)]);
+      console.log([...getResponse.filter((movie) => movie.movieId !== movieId)]);
+      const response = await deleteMovie(findedMovieId);
     } catch (err) {
       setIsInfoToolTipVisible(true);
       setInfoMessage('Произошла ошибка при попытке удаления фильма!');
@@ -304,6 +299,7 @@ function App() {
           <InfoToolTip
             infoMessage={infoMessage}
             setIsInfoToolTipVisible={setIsInfoToolTipVisible}
+            pathname={pathname}
           />
         )}
         {(pathname === '/movies' ||
@@ -328,7 +324,7 @@ function App() {
                 setSearchTextInputValue={setSearchTextInputValue}
                 searchFilmsResult={searchFilmsResult}
                 setSearchFilmsResult={setSearchFilmsResult}
-                pathnam={pathname}
+                pathname={pathname}
               />
             }
           />
@@ -341,7 +337,7 @@ function App() {
                 logedIn={logedIn}
                 movies={savedMovies}
                 handleDeleteMovie={handleDeleteMovie}
-                pathnam={pathname}
+                pathname={pathname}
               />
             }
           />
@@ -353,6 +349,8 @@ function App() {
                 logedIn={logedIn}
                 handleLogOut={handleLogOut}
                 handleUpdateUser={handleUpdateUser}
+                setInfoMessage={setInfoMessage}
+                setIsInfoToolTipVisible={setIsInfoToolTipVisible}
               />
             }
           />

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+//import { useNavigate } from 'react-router-dom';
 
 import { mailTester } from '../../utils/regEx';
 
@@ -10,7 +10,7 @@ import closeIconWhite from '../../images/icon-close_white.svg';
 
 import styles from './Profile.module.scss';
 
-const Profile = ({ handleUpdateUser, handleLogOut }) => {
+const Profile = ({ handleUpdateUser, handleLogOut, setInfoMessage, setIsInfoToolTipVisible }) => {
   const [isPopupOpened, setIsPopupOpened] = useState(false);
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
@@ -21,12 +21,34 @@ const Profile = ({ handleUpdateUser, handleLogOut }) => {
 
   const context = React.useContext(CurrentUserContext);
 
-  const navigate = useNavigate();
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   useEffect(() => {
     setUserName(context.name);
     setUserEmail(context.email);
   }, []);
+
+  useEffect(() => {
+    setIsButtonDisabled(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isErrorUserName && !isErrorUserEmail) {
+      setIsButtonDisabled(false);
+    } else {
+      setIsButtonDisabled(true);
+    }
+  }, [isErrorUserName, isErrorUserEmail]);
+
+  useEffect(() => {
+    if (context.name === userName && context.email === userEmail) {
+      setIsButtonDisabled(true);
+    } else {
+      setIsButtonDisabled(false);
+    }
+  }, [userName, userEmail, context.name, context.email]);
+
+  //const navigate = useNavigate();
 
   const onChangeName = (event) => {
     setUserName(event.target.value);
@@ -60,17 +82,24 @@ const Profile = ({ handleUpdateUser, handleLogOut }) => {
     }
   };
 
-  const onSaveChanges = (event) => {
-    console.log(event);
+  const onSaveChanges = () => {
     handleUpdateUser({ name: userName, email: userEmail });
+    setInfoMessage('Вы успешно изменили настройки профиля!');
+    setIsInfoToolTipVisible(true);
+    setTimeout(() => {
+      setIsInfoToolTipVisible(false);
+    }, 3500);
+
     onEditClick();
   };
 
-  const onEditClick = (event) => {
+  const onEditClick = () => {
     setIsPopupOpened(!isPopupOpened);
+    setUserName(context.name);
+    setUserEmail(context.email);
   };
 
-  const signout = (event) => {
+  const signout = () => {
     handleLogOut();
   };
 
@@ -162,8 +191,10 @@ const Profile = ({ handleUpdateUser, handleLogOut }) => {
           <div className={styles.popup__buttons}>
             <button
               onClick={onSaveChanges}
-              className={`${styles.popup__button} ${styles.popup__buttonSave}`}
-              disabled={isErrorUserName || isErrorUserEmail}>
+              className={`${styles.popup__button} ${styles.popup__buttonSave} ${
+                isButtonDisabled && styles.popup__buttonSave_disabled
+              }`}
+              disabled={isButtonDisabled}>
               Сохранить
             </button>
 

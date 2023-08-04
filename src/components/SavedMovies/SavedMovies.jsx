@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import useResize from 'use-resize';
 
@@ -17,8 +17,14 @@ const SavedMovies = ({ movies, handleDeleteMovie, isPreloaderVisible, pathname }
   const windowWidth = useResize().width;
 
   const [searchTextInputValue, setSearchTextInputValue] = useState('');
-  const [searchFilmsResult, setSearchFilmsResult] = useState([]);
+  const [searchFilmsResult, setSearchFilmsResult] = useState(
+    movies.filter((movie) => {
+      return movie.duration <= DURATION_SHORT_FILM;
+    }),
+  );
   const [isShortVideos, setIsShortVideos] = useState(false);
+  const isMountedSearchFilmsResult = useRef(false);
+  const isMountedIsShortVideos = useRef(false);
 
   useEffect(() => {
     if (windowWidth >= 1280) {
@@ -40,33 +46,72 @@ const SavedMovies = ({ movies, handleDeleteMovie, isPreloaderVisible, pathname }
     }
   };
 
+  useEffect(() => {
+    if (isMountedSearchFilmsResult.isMounted) {
+      setSearchFilmsResult(
+        movies.filter((movie) => {
+          return movie.duration > DURATION_SHORT_FILM;
+        }),
+      );
+    } else {
+      isMountedSearchFilmsResult.isMounted = true;
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isMountedIsShortVideos.isMounted) {
+      setSearchFilmsResult(
+        movies.filter((movie) => {
+          if (CYRILLIC_REGEX.test(searchTextInputValue)) {
+            return isShortVideos
+              ? movie.duration <= DURATION_SHORT_FILM &&
+                  movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue)
+              : movie.duration > DURATION_SHORT_FILM &&
+                  movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue);
+          } else {
+            return isShortVideos
+              ? movie.duration <= DURATION_SHORT_FILM &&
+                  movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue)
+              : movie.duration > DURATION_SHORT_FILM &&
+                  movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue);
+          }
+        }),
+      );
+    } else {
+      isMountedIsShortVideos.isMounted = true;
+    }
+  }, [isShortVideos]);
+
+  const onClickButtonSearch = (event) => {
+    event.preventDefault();
+
+    setSearchFilmsResult(
+      movies.filter((movie) => {
+        if (CYRILLIC_REGEX.test(searchTextInputValue)) {
+          return isShortVideos
+            ? movie.duration <= DURATION_SHORT_FILM &&
+                movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue)
+            : movie.duration > DURATION_SHORT_FILM &&
+                movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue);
+        } else {
+          return isShortVideos
+            ? movie.duration <= DURATION_SHORT_FILM &&
+                movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue)
+            : movie.duration > DURATION_SHORT_FILM &&
+                movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue);
+        }
+      }),
+    );
+
+    setSearchTextInputValue(searchTextInputValue);
+  };
+
   const onChangeSearch = (event) => {
     setSearchTextInputValue(event.target.value.toLowerCase().replaceAll(' ', ''));
   };
 
   const onChangeToggle = () => {
     setIsShortVideos(isShortVideos ? false : true);
-  };
-
-  const onClickButtonSearch = (event) => {
-    event.preventDefault();
-    console.log(movies);
-    setSearchFilmsResult(
-      movies.filter((movie) => {
-        console.log();
-        if (CYRILLIC_REGEX.test(searchTextInputValue)) {
-          return isShortVideos
-            ? movie.duration <= DURATION_SHORT_FILM &&
-                movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue)
-            : movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue);
-        } else {
-          return isShortVideos
-            ? movie.duration <= DURATION_SHORT_FILM &&
-                movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue)
-            : movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue);
-        }
-      }),
-    );
   };
 
   return (

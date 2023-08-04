@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
 
+//import { useNavigate } from 'react-router-dom';
+
 import closeimage from '../../images/icon-close.svg';
 
 import styles from './InfoToolTip.module.scss';
 
-const InfoToolTip = ({ infoMessage, setIsInfoToolTipVisible }) => {
+const InfoToolTip = ({ infoMessage, setIsInfoToolTipVisible, pathname }) => {
   function setToolTipVisible() {
     setIsInfoToolTipVisible(false);
   }
+
+  //const navigate = useNavigate();
 
   return (
     <div className={`${styles.tooltip} ${styles.tooltip_visible}`}>
@@ -30,9 +34,11 @@ const InfoToolTip = ({ infoMessage, setIsInfoToolTipVisible }) => {
           <h3 className={styles.tooltip__header}>Внимание!</h3>
           <p className={styles.tooltip__text}>{infoMessage}</p>
           <p className={styles.tooltip__joke}>
-            Пожалуйста, обратитесь в нашу службу поддержки, чтобы сообщить детали ошибки и сделать
+            {pathname === '/profile'
+              ? 'Поздравляем! Пользуйтесь нашим приложением дальше!'
+              : `Пожалуйста, обратитесь в нашу службу поддержки, чтобы сообщить детали ошибки и сделать
             эту работу за нас. Мы так тестируем сайт за ваш счет! Спасибо, что помогаете нам
-            безбедно жить и не утруждаться, удачи!
+            безбедно жить и не утруждаться, удачи!`}
           </p>
         </div>
 

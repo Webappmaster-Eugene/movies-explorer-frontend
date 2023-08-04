@@ -37,17 +37,18 @@ const MoviesCardList = ({
               ),
           )}
       </div>
-
-      <div className={styles.movies__etc}>
-        <button
-          type="button"
-          onClick={etcFilms}
-          className={`${styles.movies__textetc} ${
-            countFilms < movies.length && styles.movies__textetc_active
-          }`}>
-          Ещё
-        </button>
-      </div>
+      {locationMovies && (
+        <div className={styles.movies__etc}>
+          <button
+            type="button"
+            onClick={etcFilms}
+            className={`${styles.movies__textetc} ${
+              countFilms < movies.length && styles.movies__textetc_active
+            }`}>
+            Ещё
+          </button>
+        </div>
+      )}
     </div>
   );
 };

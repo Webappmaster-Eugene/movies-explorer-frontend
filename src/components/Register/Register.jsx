@@ -15,17 +15,27 @@ const Register = ({ isLogedIn, handleRegisterUser }) => {
     if (isLogedIn) {
       navigate('/movies', { replace: true });
     }
-  });
+  }, []);
 
   const [userName, setUserName] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [userEmail, setUserEmail] = useState('');
-  const [isErrorUserPassword, setIsErrorUserPassword] = useState(false);
-  const [isErrorUserName, setIsErrorUserName] = useState(false);
-  const [isErrorUserEmail, setIsErrorUserEmail] = useState(false);
-  const [errorUserPassword, setErrorUserPassword] = useState('');
-  const [errorUserName, setErrorUserName] = useState('');
-  const [errorUserEmail, setErrorUserEmail] = useState('');
+  const [isErrorUserPassword, setIsErrorUserPassword] = useState(true);
+  const [isErrorUserName, setIsErrorUserName] = useState(true);
+  const [isErrorUserEmail, setIsErrorUserEmail] = useState(true);
+  const [errorUserPassword, setErrorUserPassword] = useState('Вы не ввели пароль');
+  const [errorUserName, setErrorUserName] = useState('Вы не ввели имя');
+  const [errorUserEmail, setErrorUserEmail] = useState('Вы не ввели почту');
+
+  const [isButtonDisbled, setIsButtonDisbled] = useState(true);
+
+  useEffect(() => {
+    if (!isErrorUserPassword && !isErrorUserName && !isErrorUserEmail) {
+      setIsButtonDisbled(false);
+    } else {
+      setIsButtonDisbled(true);
+    }
+  }, [isErrorUserPassword, isErrorUserName, isErrorUserEmail]);
 
   const onChangeEmail = (event) => {
     setUserEmail(event.target.value);
@@ -162,7 +172,13 @@ const Register = ({ isLogedIn, handleRegisterUser }) => {
         </div>
 
         <div className={styles.register__buttons}>
-          <button type="button" onClick={onSignUp} className={`${styles.register__button}`}>
+          <button
+            type="button"
+            onClick={onSignUp}
+            className={`${styles.register__button} ${
+              isButtonDisbled && styles.register__button_disabled
+            }`}
+            disabled={isButtonDisbled}>
             Зарегистрироваться
           </button>
 

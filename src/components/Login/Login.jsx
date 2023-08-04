@@ -18,10 +18,20 @@ const Login = ({ isLogedIn, handleLoginUser }) => {
 
   const [userPassword, setUserPassword] = useState('');
   const [userEmail, setUserEmail] = useState('');
-  const [isErrorUserPassword, setIsErrorUserPassword] = useState(false);
-  const [isErrorUserEmail, setIsErrorUserEmail] = useState(false);
-  const [errorUserPassword, setErrorUserPassword] = useState('');
-  const [errorUserEmail, setErrorUserEmail] = useState('');
+  const [isErrorUserPassword, setIsErrorUserPassword] = useState(true);
+  const [isErrorUserEmail, setIsErrorUserEmail] = useState(true);
+  const [errorUserPassword, setErrorUserPassword] = useState('Вы не ввели пароль');
+  const [errorUserEmail, setErrorUserEmail] = useState('Вы не ввели почту');
+
+  const [isButtonDisbled, setIsButtonDisbled] = useState(true);
+
+  useEffect(() => {
+    if (!isErrorUserPassword && !isErrorUserEmail) {
+      setIsButtonDisbled(false);
+    } else {
+      setIsButtonDisbled(true);
+    }
+  }, [isErrorUserPassword, isErrorUserEmail]);
 
   const onChangeEmail = (event) => {
     setUserEmail(event.target.value);
@@ -123,10 +133,12 @@ const Login = ({ isLogedIn, handleLoginUser }) => {
 
         <div className={styles.register__buttons}>
           <button
-            disabled={isErrorUserPassword || isErrorUserEmail}
+            disabled={isButtonDisbled}
             onClick={onLogIn}
             type="button"
-            className={`${styles.register__button}`}>
+            className={`${styles.register__button} ${
+              isButtonDisbled && styles.register__button_disabled
+            }` }>
             Войти
           </button>
 

@@ -4,7 +4,6 @@
   display: none;
   position: fixed;
   top: 40px;
-  width: 85%;
   height: auto;
   border-radius: 7px;
   border: 1px solid black;
@@ -17,6 +16,9 @@
 
 .tooltip_visible{
   display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
 }
 
 .tooltip__container{

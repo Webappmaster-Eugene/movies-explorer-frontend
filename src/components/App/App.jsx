@@ -3,9 +3,6 @@ import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
-// import { films } from '../../utils/fakedb';
-// import { savedFilms } from '../../utils/fakedb';
-
 import {
   loginUser,
   createUser,
@@ -32,6 +29,8 @@ import LoadingAnimation from '../LoadingAnimation';
 
 import ProtectedRoute from '../ProtectedRoute';
 
+import { DURATION_SHORT_FILM } from '../../utils/consts';
+
 import styles from './App.module.scss';
 
 function App() {
@@ -53,7 +52,11 @@ function App() {
     localStorage.getItem('searchTextInputValue') || '',
   );
 
-  const [searchFilmsResult, setSearchFilmsResult] = React.useState([]);
+  const [searchFilmsResult, setSearchFilmsResult] = React.useState(
+    allMovies.filter((movie) => {
+      return movie.duration <= DURATION_SHORT_FILM;
+    }),
+  );
 
   useEffect(() => {
     const TOKEN = localStorage.getItem('jwt');
@@ -63,7 +66,6 @@ function App() {
       handleGetInfoUser();
       handleGetAllMovies();
       handleGetMovies();
-      // navigate('/movies', { replace: true });
     }
   }, []);
 
@@ -112,8 +114,8 @@ function App() {
     setIsLoadingVisible(true);
     try {
       console.log({ email, password });
-      const response2 = await loginUser({ email, password });
-      const token = await response2.token;
+      const response = await loginUser({ email, password });
+      const token = await response.token;
       localStorage.setItem('jwt', token);
       setLogedIn(true);
       await handleGetInfoUser();
@@ -185,6 +187,7 @@ function App() {
       localStorage.removeItem('searchTextInputValue');
       localStorage.removeItem('searchFilmsResult');
       localStorage.removeItem('isShortVideos');
+      localStorage.removeItem('lastSearch');
       setSearchFilmsResult([]);
       setSearchTextInputValue('');
       setLogedIn(false);

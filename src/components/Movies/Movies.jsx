@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import useResize from 'use-resize';
 
@@ -26,6 +26,7 @@ const Movies = ({
 }) => {
   const [countFilms, setCountFilms] = useState(0);
   const windowWidth = useResize().width;
+  const isMountedSearchFilmsResult = useRef(false);
 
   useEffect(() => {
     if (windowWidth >= 1280) {
@@ -73,8 +74,17 @@ const Movies = ({
   }, [isShortVideos]);
 
   useEffect(() => {
-    localStorage.setItem('searchFilmsResult', JSON.parse(localStorage.getItem('lastSearch')));
-    setSearchFilmsResult(JSON.parse(localStorage.getItem('lastSearch')) || []);
+    if (isMountedSearchFilmsResult && localStorage.getItem('lastSearch') === null) {
+      setSearchFilmsResult(
+        movies.filter((movie) => {
+          return movie.duration > DURATION_SHORT_FILM;
+        }),
+      );
+    } else {
+      isMountedSearchFilmsResult.isMounted = true;
+      localStorage.setItem('searchFilmsResult', JSON.parse(localStorage.getItem('lastSearch')));
+      setSearchFilmsResult(JSON.parse(localStorage.getItem('lastSearch')) || []);
+    }
   }, []);
 
   useEffect(() => {

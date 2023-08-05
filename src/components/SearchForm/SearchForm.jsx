@@ -19,9 +19,7 @@ const SearchForm = ({
             type="text"
             placeholder="Фильм"
             onChange={onChangeSearch}
-            value={
-              searchTextInputValue
-            }
+            value={searchTextInputValue}
             required
           />
           <button
@@ -44,7 +42,7 @@ const SearchForm = ({
           <label className={styles.searchform__shortsButton}>
             <input
               value={isShortVideos}
-              checked={isShortVideos ? true : false}
+              checked={isShortVideos}
               type="checkbox"
               onChange={onChangeToggle}
               className={styles.searchform__shortsCheckbox}

@@ -1,7 +1,3 @@
-import React, { useState, useEffect } from 'react';
-
-//import { useNavigate } from 'react-router-dom';
-
 import closeimage from '../../images/icon-close.svg';
 
 import styles from './InfoToolTip.module.scss';
@@ -10,8 +6,6 @@ const InfoToolTip = ({ infoMessage, setIsInfoToolTipVisible, pathname }) => {
   function setToolTipVisible() {
     setIsInfoToolTipVisible(false);
   }
-
-  //const navigate = useNavigate();
 
   return (
     <div className={`${styles.tooltip} ${styles.tooltip_visible}`}>

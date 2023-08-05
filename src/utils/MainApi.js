@@ -7,7 +7,10 @@ export const getUserInfo = async () => {
   try {
     const infoUser = await fetch(`${BASE_URL_API}/users/me`, {
       method: 'GET',
-      headers: AUTH_HEADERS,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+        'Content-Type': 'application/json',
+      },
     });
     return await infoUser.json();
   } catch (err) {

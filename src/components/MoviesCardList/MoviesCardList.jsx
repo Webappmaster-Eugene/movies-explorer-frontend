@@ -16,11 +16,18 @@ const MoviesCardList = ({
 
   return (
     <div className={styles.movies}>
-      {(movies.length === 0 || savedMovies.length === 0) && (
+      {!locationMovies && savedMovies.length === 0 && (
         <h2 className={styles.movies__none}>{`${
           locationMovies ? 'Совершите поиск по фильмам' : 'У вас нет сохраненных фильмов'
         }`}</h2>
       )}
+
+      {locationMovies && movies.length === 0 && localStorage.getItem('searchFilmsResult') && (
+        <h2 className={styles.movies__none}>{`${
+          locationMovies ? 'Совершите поиск по фильмам' : 'У вас нет сохраненных фильмов'
+        }`}</h2>
+      )}
+
       <div className={styles.movies__cardlist}>
         {movies
           .slice(0, countFilms)

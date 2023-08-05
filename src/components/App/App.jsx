@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
-
+import { CYRILLIC_REGEX } from '../../utils/regEx';
 import {
   loginUser,
   createUser,
@@ -49,23 +49,88 @@ function App() {
   const [allMovies, setAllMovies] = React.useState([]);
 
   const [searchTextInputValue, setSearchTextInputValue] = React.useState(
-    localStorage.getItem('searchTextInputValue') || '',
+    JSON.parse(localStorage.getItem('searchTextInputValue')) ?? '',
   );
 
+  // const firstSearchResult = allMovies.filter((movie) => {
+  //   return movie.duration > DURATION_SHORT_FILM;
+  // });
+  // localStorage.setItem(
+  //   'searchFilmsResult',
+  //   JSON.stringify(
+  //     allMovies.filter((movie) => {
+  //       return movie.duration > DURATION_SHORT_FILM;
+  //     }),
+  //   ),
+  // );
+
   const [searchFilmsResult, setSearchFilmsResult] = React.useState(
-    allMovies.filter((movie) => {
-      return movie.duration <= DURATION_SHORT_FILM;
-    }),
+    JSON.parse(localStorage.getItem('searchFilmsResult')) ?? [],
   );
+
+  const [isShortVideos, setIsShortVideos] = React.useState(
+    JSON.parse(localStorage.getItem('isShortVideos') ?? false),
+  );
+
+  const onChangeToggle = () => {
+    setIsShortVideos((prevState) => !prevState);
+    setSearchFilmsResult(
+      allMovies.filter((movie) => {
+        if (CYRILLIC_REGEX.test(searchTextInputValue)) {
+          return !isShortVideos
+            ? movie.duration <= DURATION_SHORT_FILM &&
+                movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue)
+            : movie.duration > DURATION_SHORT_FILM &&
+                movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue);
+        } else {
+          return !isShortVideos
+            ? movie.duration <= DURATION_SHORT_FILM &&
+                movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue)
+            : movie.duration > DURATION_SHORT_FILM &&
+                movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue);
+        }
+      }),
+    );
+    setSearchTextInputValue(searchTextInputValue);
+  };
+
+  useEffect(() => {
+    localStorage.setItem('isShortVideos', isShortVideos);
+    localStorage.setItem('searchTextInputValue', JSON.stringify(searchTextInputValue));
+    localStorage.setItem('searchFilmsResult', JSON.stringify(searchFilmsResult));
+  }, [isShortVideos]);
+
+  useEffect(() => {
+    localStorage.setItem('searchTextInputValue', JSON.stringify(searchTextInputValue));
+    localStorage.setItem('searchFilmsResult', JSON.stringify(searchFilmsResult));
+  }, [searchFilmsResult]);
+  // const [searchTextInputValue, setSearchTextInputValue] = React.useState(
+  //   localStorage.getItem('searchTextInputValue') || '',
+  // );
+
+  // const [searchFilmsResult, setSearchFilmsResult] = React.useState(
+  //   allMovies.filter((movie) => {
+  //     return movie.duration <= DURATION_SHORT_FILM;
+  //   }),
+  // );
 
   useEffect(() => {
     const TOKEN = localStorage.getItem('jwt');
 
     if (TOKEN) {
-      setLogedIn(true);
-      handleGetInfoUser();
-      handleGetAllMovies();
-      handleGetMovies();
+      Promise.all([handleGetInfoUser(), handleGetAllMovies(), handleGetMovies()]).then(() => {
+        setLogedIn(true);
+        // setAllMovies(firstSearchResult);
+        // localStorage.setItem(
+        //   'searchFilmsResult',
+        //   JSON.stringify(
+        //     allMovies.filter((movie) => {
+        //       return movie.duration > DURATION_SHORT_FILM;
+        //     }),
+        //   ),
+        // );
+        navigate('/movies');
+      });
     }
   }, []);
 
@@ -317,6 +382,7 @@ function App() {
             element={
               <ProtectedRoute
                 element={Movies}
+                isShortVideos={isShortVideos}
                 logedIn={logedIn}
                 isPreloaderVisible={isPreloaderVisible}
                 movies={allMovies}
@@ -328,6 +394,7 @@ function App() {
                 searchFilmsResult={searchFilmsResult}
                 setSearchFilmsResult={setSearchFilmsResult}
                 pathname={pathname}
+                onChangeToggle={onChangeToggle}
               />
             }
           />

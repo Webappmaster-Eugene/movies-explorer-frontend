@@ -23,10 +23,14 @@ const Movies = ({
   searchFilmsResult,
   setSearchFilmsResult,
   pathname,
+  isShortVideos,
+  onChangeToggle,
 }) => {
   const [countFilms, setCountFilms] = useState(0);
   const windowWidth = useResize().width;
-  const isMountedSearchFilmsResult = useRef(false);
+  // const isMountedSearchFilmsResult = useRef(false);
+  // const isMountedIsShortVideos = useRef(false);
+  // const isMountedSearchFilmsResult = useRef(false);
 
   useEffect(() => {
     if (windowWidth >= 1280) {
@@ -47,50 +51,36 @@ const Movies = ({
       setCountFilms(countFilms + 2);
     }
   };
-
-  const [isShortVideos, setIsShortVideos] = useState(
-    localStorage.getItem('isShortVideos') === 'true' ? true : false,
-  );
-
   useEffect(() => {
-    localStorage.setItem('isShortVideos', isShortVideos ? true : false);
-    setSearchFilmsResult(
-      movies.filter((movie) => {
-        if (CYRILLIC_REGEX.test(searchTextInputValue)) {
-          return isShortVideos
-            ? movie.duration <= DURATION_SHORT_FILM &&
-                movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue)
-            : movie.duration > DURATION_SHORT_FILM &&
-                movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue);
-        } else {
-          return isShortVideos
-            ? movie.duration <= DURATION_SHORT_FILM &&
-                movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue)
-            : movie.duration > DURATION_SHORT_FILM &&
-                movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue);
-        }
-      }),
-    );
-  }, [isShortVideos]);
-
-  useEffect(() => {
-    if (isMountedSearchFilmsResult && localStorage.getItem('lastSearch') === null) {
-      setSearchFilmsResult(
-        movies.filter((movie) => {
-          return movie.duration > DURATION_SHORT_FILM;
-        }),
-      );
-    } else {
-      isMountedSearchFilmsResult.isMounted = true;
-      localStorage.setItem('searchFilmsResult', JSON.parse(localStorage.getItem('lastSearch')));
-      setSearchFilmsResult(JSON.parse(localStorage.getItem('lastSearch')) || []);
-    }
+    setSearchFilmsResult(JSON.parse(localStorage.getItem('searchFilmsResult')));
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem('searchTextInputValue', searchTextInputValue);
-    localStorage.setItem('searchFilmsResult', JSON.stringify(searchFilmsResult));
-  }, [searchFilmsResult]);
+  // const onClickButtonSearch = (event) => {
+  //   event.preventDefault();
+
+  //   setSearchFilmsResult(
+  //     movies.filter((movie) => {
+  //       if (CYRILLIC_REGEX.test(searchTextInputValue)) {
+  //         return isShortVideos
+  //           ? movie.duration <= DURATION_SHORT_FILM &&
+  //               movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue)
+  //           : movie.duration > DURATION_SHORT_FILM &&
+  //               movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue);
+  //       } else {
+  //         return isShortVideos
+  //           ? movie.duration <= DURATION_SHORT_FILM &&
+  //               movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue)
+  //           : movie.duration > DURATION_SHORT_FILM &&
+  //               movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue);
+  //       }
+  //     }),
+  //   );
+  //   setSearchTextInputValue(searchTextInputValue);
+  // };
+
+  const onChangeSearch = (event) => {
+    setSearchTextInputValue(event.target.value.toLowerCase().replaceAll(' ', ''));
+  };
 
   const onClickButtonSearch = (event) => {
     event.preventDefault();
@@ -112,56 +102,11 @@ const Movies = ({
         }
       }),
     );
-    localStorage.setItem(
-      'lastSearch',
-      JSON.stringify(
-        movies.filter((movie) => {
-          if (CYRILLIC_REGEX.test(searchTextInputValue)) {
-            return isShortVideos
-              ? movie.duration <= DURATION_SHORT_FILM &&
-                  movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue)
-              : movie.duration > DURATION_SHORT_FILM &&
-                  movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue);
-          } else {
-            return isShortVideos
-              ? movie.duration <= DURATION_SHORT_FILM &&
-                  movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue)
-              : movie.duration > DURATION_SHORT_FILM &&
-                  movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue);
-          }
-        }),
-      ),
-    );
+
     setSearchTextInputValue(searchTextInputValue);
   };
 
-  const onChangeSearch = (event) => {
-    setSearchTextInputValue(event.target.value.toLowerCase().replaceAll(' ', ''));
-  };
-
-  const onChangeToggle = () => {
-    setIsShortVideos(isShortVideos ? false : true);
-    localStorage.setItem(
-      'lastSearch',
-      JSON.stringify(
-        movies.filter((movie) => {
-          if (CYRILLIC_REGEX.test(searchTextInputValue)) {
-            return !isShortVideos
-              ? movie.duration <= DURATION_SHORT_FILM &&
-                  movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue)
-              : movie.duration > DURATION_SHORT_FILM &&
-                  movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue);
-          } else {
-            return !isShortVideos
-              ? movie.duration <= DURATION_SHORT_FILM &&
-                  movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue)
-              : movie.duration > DURATION_SHORT_FILM &&
-                  movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue);
-          }
-        }),
-      ),
-    );
-  };
+  console.log(searchFilmsResult);
 
   return (
     <div className={styles.movies}>

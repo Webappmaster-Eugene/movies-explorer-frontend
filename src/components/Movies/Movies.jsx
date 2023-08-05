@@ -52,7 +52,15 @@ const Movies = ({
     }
   };
   useEffect(() => {
-    setSearchFilmsResult(JSON.parse(localStorage.getItem('searchFilmsResult')));
+    if (JSON.parse(localStorage.getItem('searchFilmsResult')).length !== 0) {
+      setSearchFilmsResult(JSON.parse(localStorage.getItem('searchFilmsResult')));
+    } else {
+      setSearchFilmsResult(
+        movies.filter((movie) => {
+          return movie.duration > DURATION_SHORT_FILM;
+        }),
+      );
+    }
   }, []);
 
   // const onClickButtonSearch = (event) => {
@@ -105,8 +113,6 @@ const Movies = ({
 
     setSearchTextInputValue(searchTextInputValue);
   };
-
-  console.log(searchFilmsResult);
 
   return (
     <div className={styles.movies}>

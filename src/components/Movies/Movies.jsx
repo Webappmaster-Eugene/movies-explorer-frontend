@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 
 import useResize from 'use-resize';
 
+import { cleanup } from '@testing-library/react';
+
 import SearchForm from '../SearchForm';
 import MoviesCardList from '../MoviesCardList';
 import Preloader from '../Preloader';
@@ -25,6 +27,7 @@ const Movies = ({
   pathname,
   isShortVideos,
   onChangeToggle,
+  onClickButtonSearch,
 }) => {
   const [countFilms, setCountFilms] = useState(0);
   const windowWidth = useResize().width;
@@ -51,67 +54,31 @@ const Movies = ({
       setCountFilms(countFilms + 2);
     }
   };
+  //window.location.reload();
+  // useEffect(() => {
+  //   console.log(JSON.parse(localStorage.getItem('searchFilmsResult')));
+  //   if (JSON.parse(localStorage.getItem('searchFilmsResult')).length !== 0) {
+  //     setSearchFilmsResult(JSON.parse(localStorage.getItem('searchFilmsResult')));
+  //   }
+  //   // else if (JSON.parse(localStorage.getItem('searchTextInputValue')) === '') {
+  //   //   setSearchFilmsResult(
+  //   //     movies.filter((movie) => {
+  //   //       return movie.duration > DURATION_SHORT_FILM;
+  //   //     }),
+  //   //   );
+  //   // }
+  // }, []);
+
+  // useEffect(() => {
+  //   window.location.reload();
+  // }, [pathname]);
+
   useEffect(() => {
-    if (JSON.parse(localStorage.getItem('searchFilmsResult')).length !== 0) {
-      setSearchFilmsResult(JSON.parse(localStorage.getItem('searchFilmsResult')));
-    } else {
-      setSearchFilmsResult(
-        movies.filter((movie) => {
-          return movie.duration > DURATION_SHORT_FILM;
-        }),
-      );
-    }
-  }, []);
-
-  // const onClickButtonSearch = (event) => {
-  //   event.preventDefault();
-
-  //   setSearchFilmsResult(
-  //     movies.filter((movie) => {
-  //       if (CYRILLIC_REGEX.test(searchTextInputValue)) {
-  //         return isShortVideos
-  //           ? movie.duration <= DURATION_SHORT_FILM &&
-  //               movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue)
-  //           : movie.duration > DURATION_SHORT_FILM &&
-  //               movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue);
-  //       } else {
-  //         return isShortVideos
-  //           ? movie.duration <= DURATION_SHORT_FILM &&
-  //               movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue)
-  //           : movie.duration > DURATION_SHORT_FILM &&
-  //               movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue);
-  //       }
-  //     }),
-  //   );
-  //   setSearchTextInputValue(searchTextInputValue);
-  // };
+    localStorage.setItem('searchFilmsResult', JSON.stringify(searchFilmsResult));
+  }, [searchFilmsResult]);
 
   const onChangeSearch = (event) => {
     setSearchTextInputValue(event.target.value.toLowerCase().replaceAll(' ', ''));
-  };
-
-  const onClickButtonSearch = (event) => {
-    event.preventDefault();
-
-    setSearchFilmsResult(
-      movies.filter((movie) => {
-        if (CYRILLIC_REGEX.test(searchTextInputValue)) {
-          return isShortVideos
-            ? movie.duration <= DURATION_SHORT_FILM &&
-                movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue)
-            : movie.duration > DURATION_SHORT_FILM &&
-                movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue);
-        } else {
-          return isShortVideos
-            ? movie.duration <= DURATION_SHORT_FILM &&
-                movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue)
-            : movie.duration > DURATION_SHORT_FILM &&
-                movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue);
-        }
-      }),
-    );
-
-    setSearchTextInputValue(searchTextInputValue);
   };
 
   return (
@@ -130,7 +97,7 @@ const Movies = ({
         <MoviesCardList
           etcFilms={etcFilms}
           countFilms={countFilms}
-          movies={searchFilmsResult || JSON.parse(localStorage.getItem('searchFilmsResult'))}
+          movies={searchFilmsResult ?? JSON.parse(localStorage.getItem('searchFilmsResult'))}
           handleCreateMovie={handleCreateMovie}
           handleDeleteMovie={handleDeleteMovie}
           savedMovies={savedMovies}

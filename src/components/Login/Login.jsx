@@ -7,7 +7,7 @@ import { mailTester, passwordTester } from '../../utils/regEx';
 
 import styles from './Login.module.scss';
 
-const Login = ({ isLogedIn, handleLoginUser }) => {
+const Login = ({ isLogedIn, handleLoginUser, allMovies, handleGetAllMovies }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -74,7 +74,12 @@ const Login = ({ isLogedIn, handleLoginUser }) => {
   const onLogIn = (event) => {
     event.preventDefault();
 
-    handleLoginUser({ email: userEmail, password: userPassword });
+    handleLoginUser({ email: userEmail, password: userPassword }).then(() => {
+      handleGetAllMovies();
+    });
+    // .then(() => {
+    //   localStorage.setItem('searchFilmsResult', JSON.stringify());
+    // });
   };
 
   return (

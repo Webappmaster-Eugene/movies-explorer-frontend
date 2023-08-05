@@ -52,18 +52,6 @@ function App() {
     JSON.parse(localStorage.getItem('searchTextInputValue')) ?? '',
   );
 
-  // const firstSearchResult = allMovies.filter((movie) => {
-  //   return movie.duration > DURATION_SHORT_FILM;
-  // });
-  // localStorage.setItem(
-  //   'searchFilmsResult',
-  //   JSON.stringify(
-  //     allMovies.filter((movie) => {
-  //       return movie.duration > DURATION_SHORT_FILM;
-  //     }),
-  //   ),
-  // );
-
   const [searchFilmsResult, setSearchFilmsResult] = React.useState(
     JSON.parse(localStorage.getItem('searchFilmsResult')) ?? [],
   );
@@ -71,6 +59,17 @@ function App() {
   const [isShortVideos, setIsShortVideos] = React.useState(
     JSON.parse(localStorage.getItem('isShortVideos') ?? false),
   );
+
+  // useEffect(() => {
+  //   const res = new Promise((resolve, reject) => {
+  //     resolve();
+  //   });
+  //   res
+  //     .then(() => {
+  //       handleGetAllMovies();
+  //     })
+  //     .then(() => localStorage.setItem('searchFilmsResult', JSON.stringify(allMovies)));
+  // }, []);
 
   const onChangeToggle = () => {
     setIsShortVideos((prevState) => !prevState);
@@ -94,6 +93,15 @@ function App() {
     setSearchTextInputValue(searchTextInputValue);
   };
 
+  // localStorage.setItem(
+  //   'searchFilmsResult',
+  //   JSON.stringify(
+  //     allMovies.filter((movie) => {
+  //       return movie.duration > DURATION_SHORT_FILM;
+  //     }),
+  //   ),
+  // );
+
   useEffect(() => {
     localStorage.setItem('isShortVideos', isShortVideos);
     localStorage.setItem('searchTextInputValue', JSON.stringify(searchTextInputValue));
@@ -103,16 +111,10 @@ function App() {
   useEffect(() => {
     localStorage.setItem('searchTextInputValue', JSON.stringify(searchTextInputValue));
     localStorage.setItem('searchFilmsResult', JSON.stringify(searchFilmsResult));
+    // if (searchFilmsResult !== JSON.parse(localStorage.getItem('searchFilmsResult'))) {
+    //   setSearchFilmsResult(JSON.parse(localStorage.getItem('searchFilmsResult')));
+    // }
   }, [searchFilmsResult]);
-  // const [searchTextInputValue, setSearchTextInputValue] = React.useState(
-  //   localStorage.getItem('searchTextInputValue') || '',
-  // );
-
-  // const [searchFilmsResult, setSearchFilmsResult] = React.useState(
-  //   allMovies.filter((movie) => {
-  //     return movie.duration <= DURATION_SHORT_FILM;
-  //   }),
-  // );
 
   useEffect(() => {
     const TOKEN = localStorage.getItem('jwt');
@@ -120,19 +122,41 @@ function App() {
     if (TOKEN) {
       Promise.all([handleGetInfoUser(), handleGetAllMovies(), handleGetMovies()]).then(() => {
         setLogedIn(true);
-        // setAllMovies(firstSearchResult);
-        // localStorage.setItem(
-        //   'searchFilmsResult',
-        //   JSON.stringify(
-        //     allMovies.filter((movie) => {
-        //       return movie.duration > DURATION_SHORT_FILM;
-        //     }),
-        //   ),
-        // );
+        // if (searchFilmsResult !== JSON.parse(localStorage.getItem('searchFilmsResult'))) {
+        //   setSearchFilmsResult(JSON.parse(localStorage.getItem('searchFilmsResult')));
+        // }
+
         navigate('/movies');
       });
+    } else {
+      setSearchFilmsResult(allMovies);
+      localStorage.setItem('searchFilmsResult', JSON.stringify(allMovies));
     }
   }, []);
+
+  const onClickButtonSearch = (event) => {
+    event.preventDefault();
+
+    setSearchFilmsResult(
+      allMovies.filter((movie) => {
+        if (CYRILLIC_REGEX.test(searchTextInputValue)) {
+          return isShortVideos
+            ? movie.duration <= DURATION_SHORT_FILM &&
+                movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue)
+            : movie.duration > DURATION_SHORT_FILM &&
+                movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue);
+        } else {
+          return isShortVideos
+            ? movie.duration <= DURATION_SHORT_FILM &&
+                movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue)
+            : movie.duration > DURATION_SHORT_FILM &&
+                movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue);
+        }
+      }),
+    );
+
+    setSearchTextInputValue(searchTextInputValue);
+  };
 
   //Получить все фильмы из стороннего API для дальнейшей работы с ними
   async function handleGetAllMovies() {
@@ -140,6 +164,7 @@ function App() {
     try {
       const allMoviesResponse = await getAllMovies();
       setAllMovies(allMoviesResponse);
+      //localStorage.setItem('searchFilmsResult', JSON.stringify(allMoviesResponse));
     } catch (err) {
       console.log(err);
       setIsInfoToolTipVisible(true);
@@ -178,12 +203,24 @@ function App() {
   async function handleLoginUser({ email, password }) {
     setIsLoadingVisible(true);
     try {
-      console.log({ email, password });
       const response = await loginUser({ email, password });
       const token = await response.token;
       localStorage.setItem('jwt', token);
       setLogedIn(true);
       await handleGetInfoUser();
+
+      localStorage.setItem(
+        'searchFilmsResult',
+        JSON.stringify(
+          allMovies.filter((movie) => {
+            return movie.duration > DURATION_SHORT_FILM;
+          }),
+        ),
+      );
+
+      setSearchFilmsResult(JSON.parse(localStorage.getItem('searchFilmsResult')));
+
+      //navigate('/movies', { replace: true });
       navigate('/movies', { replace: true });
     } catch (err) {
       console.log(err);
@@ -252,7 +289,6 @@ function App() {
       localStorage.removeItem('searchTextInputValue');
       localStorage.removeItem('searchFilmsResult');
       localStorage.removeItem('isShortVideos');
-      localStorage.removeItem('lastSearch');
       setSearchFilmsResult([]);
       setSearchTextInputValue('');
       setLogedIn(false);
@@ -395,6 +431,7 @@ function App() {
                 setSearchFilmsResult={setSearchFilmsResult}
                 pathname={pathname}
                 onChangeToggle={onChangeToggle}
+                onClickButtonSearch={onClickButtonSearch}
               />
             }
           />
@@ -427,7 +464,14 @@ function App() {
           {!logedIn && (
             <Route
               path="/signin"
-              element={<Login isLogedIn={logedIn} handleLoginUser={handleLoginUser} />}
+              element={
+                <Login
+                  isLogedIn={logedIn}
+                  handleLoginUser={handleLoginUser}
+                  handleGetAllMovies={handleGetAllMovies}
+                  allMovies={allMovies}
+                />
+              }
             />
           )}
           {!logedIn && (

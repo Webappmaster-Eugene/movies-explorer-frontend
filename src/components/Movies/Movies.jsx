@@ -31,9 +31,6 @@ const Movies = ({
 }) => {
   const [countFilms, setCountFilms] = useState(0);
   const windowWidth = useResize().width;
-  // const isMountedSearchFilmsResult = useRef(false);
-  // const isMountedIsShortVideos = useRef(false);
-  // const isMountedSearchFilmsResult = useRef(false);
 
   useEffect(() => {
     if (windowWidth >= 1280) {
@@ -54,24 +51,6 @@ const Movies = ({
       setCountFilms(countFilms + 2);
     }
   };
-  //window.location.reload();
-  // useEffect(() => {
-  //   console.log(JSON.parse(localStorage.getItem('searchFilmsResult')));
-  //   if (JSON.parse(localStorage.getItem('searchFilmsResult')).length !== 0) {
-  //     setSearchFilmsResult(JSON.parse(localStorage.getItem('searchFilmsResult')));
-  //   }
-  //   // else if (JSON.parse(localStorage.getItem('searchTextInputValue')) === '') {
-  //   //   setSearchFilmsResult(
-  //   //     movies.filter((movie) => {
-  //   //       return movie.duration > DURATION_SHORT_FILM;
-  //   //     }),
-  //   //   );
-  //   // }
-  // }, []);
-
-  // useEffect(() => {
-  //   window.location.reload();
-  // }, [pathname]);
 
   useEffect(() => {
     localStorage.setItem('searchFilmsResult', JSON.stringify(searchFilmsResult));

@@ -60,17 +60,6 @@ function App() {
     JSON.parse(localStorage.getItem('isShortVideos') ?? false),
   );
 
-  // useEffect(() => {
-  //   const res = new Promise((resolve, reject) => {
-  //     resolve();
-  //   });
-  //   res
-  //     .then(() => {
-  //       handleGetAllMovies();
-  //     })
-  //     .then(() => localStorage.setItem('searchFilmsResult', JSON.stringify(allMovies)));
-  // }, []);
-
   const onChangeToggle = () => {
     setIsShortVideos((prevState) => !prevState);
     setSearchFilmsResult(
@@ -93,15 +82,6 @@ function App() {
     setSearchTextInputValue(searchTextInputValue);
   };
 
-  // localStorage.setItem(
-  //   'searchFilmsResult',
-  //   JSON.stringify(
-  //     allMovies.filter((movie) => {
-  //       return movie.duration > DURATION_SHORT_FILM;
-  //     }),
-  //   ),
-  // );
-
   useEffect(() => {
     localStorage.setItem('isShortVideos', isShortVideos);
     localStorage.setItem('searchTextInputValue', JSON.stringify(searchTextInputValue));
@@ -111,9 +91,6 @@ function App() {
   useEffect(() => {
     localStorage.setItem('searchTextInputValue', JSON.stringify(searchTextInputValue));
     localStorage.setItem('searchFilmsResult', JSON.stringify(searchFilmsResult));
-    // if (searchFilmsResult !== JSON.parse(localStorage.getItem('searchFilmsResult'))) {
-    //   setSearchFilmsResult(JSON.parse(localStorage.getItem('searchFilmsResult')));
-    // }
   }, [searchFilmsResult]);
 
   useEffect(() => {
@@ -122,15 +99,13 @@ function App() {
     if (TOKEN) {
       Promise.all([handleGetInfoUser(), handleGetAllMovies(), handleGetMovies()]).then(() => {
         setLogedIn(true);
-        // if (searchFilmsResult !== JSON.parse(localStorage.getItem('searchFilmsResult'))) {
-        //   setSearchFilmsResult(JSON.parse(localStorage.getItem('searchFilmsResult')));
-        // }
-
         navigate('/movies');
       });
     } else {
-      setSearchFilmsResult(allMovies);
-      localStorage.setItem('searchFilmsResult', JSON.stringify(allMovies));
+      Promise.all([handleGetAllMovies()]).then(() => {
+        setSearchFilmsResult(allMovies);
+        localStorage.setItem('searchFilmsResult', JSON.stringify(allMovies));
+      });
     }
   }, []);
 
@@ -164,7 +139,6 @@ function App() {
     try {
       const allMoviesResponse = await getAllMovies();
       setAllMovies(allMoviesResponse);
-      //localStorage.setItem('searchFilmsResult', JSON.stringify(allMoviesResponse));
     } catch (err) {
       console.log(err);
       setIsInfoToolTipVisible(true);
@@ -219,8 +193,6 @@ function App() {
       );
 
       setSearchFilmsResult(JSON.parse(localStorage.getItem('searchFilmsResult')));
-
-      //navigate('/movies', { replace: true });
       navigate('/movies', { replace: true });
     } catch (err) {
       console.log(err);

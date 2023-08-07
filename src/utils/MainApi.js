@@ -68,7 +68,10 @@ export const getMovies = async () => {
 export const createMovie = async (film) => {
   return fetch(`${BASE_URL_API}/movies`, {
     method: 'POST',
-    headers: AUTH_HEADERS,
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+      'Content-Type': 'application/json',
+    },
     body: JSON.stringify({
       country: film.country,
       director: film.director,

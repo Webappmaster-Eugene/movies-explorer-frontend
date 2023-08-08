@@ -10,7 +10,13 @@ import closeIconWhite from '../../images/icon-close_white.svg';
 
 import styles from './Profile.module.scss';
 
-const Profile = ({ handleUpdateUser, handleLogOut, setInfoMessage, setIsInfoToolTipVisible }) => {
+const Profile = ({
+  handleUpdateUser,
+  handleLogOut,
+  setInfoMessage,
+  setIsInfoToolTipVisible,
+  logedIn,
+}) => {
   const [isPopupOpened, setIsPopupOpened] = useState(false);
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');

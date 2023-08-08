@@ -35,7 +35,7 @@ const Register = ({ isLogedIn, handleRegisterUser }) => {
     } else {
       setIsButtonDisbled(true);
     }
-  }, [isErrorUserPassword, isErrorUserName, isErrorUserEmail]);
+  }, [userPassword, userEmail, userName]);
 
   const onChangeEmail = (event) => {
     setUserEmail(event.target.value);
@@ -95,6 +95,10 @@ const Register = ({ isLogedIn, handleRegisterUser }) => {
     console.log({ email: userEmail, password: userPassword, name: userName });
     handleRegisterUser({ email: userEmail, password: userPassword, name: userName });
   };
+
+  useEffect(() => {
+    setIsButtonDisbled(true);
+  }, []);
 
   return (
     <section className={styles.register}>

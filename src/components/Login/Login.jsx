@@ -31,7 +31,7 @@ const Login = ({ isLogedIn, handleLoginUser, allMovies, handleGetAllMovies }) =>
     } else {
       setIsButtonDisbled(true);
     }
-  }, [isErrorUserPassword, isErrorUserEmail]);
+  }, [userPassword, userEmail]);
 
   const onChangeEmail = (event) => {
     setUserEmail(event.target.value);
@@ -77,10 +77,11 @@ const Login = ({ isLogedIn, handleLoginUser, allMovies, handleGetAllMovies }) =>
     handleLoginUser({ email: userEmail, password: userPassword }).then(() => {
       handleGetAllMovies();
     });
-    // .then(() => {
-    //   localStorage.setItem('searchFilmsResult', JSON.stringify());
-    // });
   };
+
+  useEffect(() => {
+    setIsButtonDisbled(true);
+  }, []);
 
   return (
     <section className={styles.register}>

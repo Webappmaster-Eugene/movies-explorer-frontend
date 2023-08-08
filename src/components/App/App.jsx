@@ -98,8 +98,11 @@ function App() {
 
     if (TOKEN) {
       Promise.all([handleGetInfoUser(), handleGetAllMovies(), handleGetMovies()]).then(() => {
-        setLogedIn(true);
-        navigate('/movies');
+        if (localStorage.getItem('jwt')) {
+          setLogedIn(true);
+        } else {
+          navigate('/signin', { replace: true });
+        }
       });
     } else {
       Promise.all([handleGetAllMovies()]).then(() => {
@@ -163,7 +166,9 @@ function App() {
     } catch (err) {
       console.log(err);
       setIsInfoToolTipVisible(true);
-      setInfoMessage('Произошла ошибка при попытке запроса инофрмации о пользователе!');
+      setInfoMessage('Произошла ошибка при попытке запроса информации о пользователе!');
+      await handleLogOut();
+      // navigate('/signin', { replace: true });
     } finally {
       setIsLoadingVisible(false);
       isInfoToolTipVisible &&
@@ -180,8 +185,10 @@ function App() {
       const response = await loginUser({ email, password });
       const token = await response.token;
       localStorage.setItem('jwt', token);
+      localStorage.setItem('logedIn', 'logedIn');
       setLogedIn(true);
       await handleGetInfoUser();
+      await handleGetMovies();
 
       localStorage.setItem(
         'searchFilmsResult',
@@ -193,6 +200,7 @@ function App() {
       );
 
       setSearchFilmsResult(JSON.parse(localStorage.getItem('searchFilmsResult')));
+
       navigate('/movies', { replace: true });
     } catch (err) {
       console.log(err);
@@ -216,6 +224,7 @@ function App() {
       const token = await response2.token;
       localStorage.setItem('jwt', token);
       setLogedIn(true);
+      localStorage.setItem('logedIn', 'logedIn');
       await handleGetInfoUser(token);
       navigate('/movies', { replace: true });
     } catch (err) {
@@ -236,6 +245,7 @@ function App() {
   async function handleUpdateUser({ email, name }) {
     setIsLoadingVisible(true);
     try {
+      console.log('Запуск');
       const response = await updateUser({ email, name });
       setUserInfo({ email: response.email, name: response.name });
     } catch (err) {
@@ -261,6 +271,8 @@ function App() {
       localStorage.removeItem('searchTextInputValue');
       localStorage.removeItem('searchFilmsResult');
       localStorage.removeItem('isShortVideos');
+      localStorage.removeItem('logedIn');
+
       setSearchFilmsResult([]);
       setSearchTextInputValue('');
       setLogedIn(false);
@@ -293,7 +305,7 @@ function App() {
     nameEN,
     movieId,
   }) {
-    setIsLoadingVisible(true);
+    //setIsLoadingVisible(true);
     try {
       const response = await createMovie({
         country,
@@ -308,14 +320,13 @@ function App() {
         nameEN,
         movieId,
       });
-      console.log(response);
       setSavedMovies([response, ...savedMovies]);
     } catch (err) {
       console.log(err);
       setIsInfoToolTipVisible(true);
       setInfoMessage('Произошла ошибка при попытке добавления фильма в избранное!');
     } finally {
-      setIsLoadingVisible(false);
+      //setIsLoadingVisible(false);
       isInfoToolTipVisible &&
         setTimeout(() => {
           setIsInfoToolTipVisible(false);
@@ -346,19 +357,17 @@ function App() {
   }
 
   async function handleDeleteMovie(movieId) {
-    setIsLoadingVisible(true);
+    //setIsLoadingVisible(true);
     try {
       const getResponse = await getMovies();
       const findedMovieId = getResponse.filter((movie) => movie.movieId === movieId)[0]._id;
-      console.log(getResponse);
       setSavedMovies([...getResponse.filter((movie) => movie.movieId !== movieId)]);
-      console.log([...getResponse.filter((movie) => movie.movieId !== movieId)]);
       const response = await deleteMovie(findedMovieId);
     } catch (err) {
       setIsInfoToolTipVisible(true);
       setInfoMessage('Произошла ошибка при попытке удаления фильма!');
     } finally {
-      setIsLoadingVisible(false);
+      //setIsLoadingVisible(false);
       isInfoToolTipVisible &&
         setTimeout(() => {
           setIsInfoToolTipVisible(false);

@@ -12,15 +12,16 @@ export const getUserInfo = async () => {
         'Content-Type': 'application/json',
       },
     });
-    return await infoUser.json();
-  } catch (err) {
-    Promise.reject(`Произошла ошибка: ${err.status}`);
-  }
+    const response = await infoUser.json();
 
-  // return fetch(`${BASE_URL_API}/users/me`, {
-  //   method: 'GET',
-  //   headers: AUTH_HEADERS,
-  // }).then((res) => (res.ok ? res.json() : Promise.reject(`Произошла ошибка: ${res.status}`)));
+    if (!response.message) {
+      return await response;
+    } else {
+      return Promise.reject('Произошла ошибка при входе');
+    }
+  } catch (err) {
+    return Promise.reject(`Произошла ошибка: ${err.status}`);
+  }
 };
 
 export const createUser = async ({ name, email, password }) => {
@@ -46,7 +47,10 @@ export const loginUser = async ({ email, password }) => {
 export const updateUser = async ({ name, email }) => {
   return fetch(`${BASE_URL_API}/users/me`, {
     method: 'PATCH',
-    headers: AUTH_HEADERS,
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+      'Content-Type': 'application/json',
+    },
     body: JSON.stringify({ email, name }),
   }).then((res) => (res.ok ? res.json() : Promise.reject(`Произошла ошибка: ${res.status}`)));
 };
@@ -56,7 +60,10 @@ export const updateUser = async ({ name, email }) => {
 export const getMovies = async () => {
   const response = await fetch(`${BASE_URL_API}/movies`, {
     method: 'GET',
-    headers: AUTH_HEADERS,
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+      'Content-Type': 'application/json',
+    },
     // }).then((res) => ({res.ok ? res.json() : Promise.reject(`Произошла ошибка: ${res.status}`)));
   });
   return response.ok ? response.json() : [];
@@ -89,10 +96,12 @@ export const createMovie = async (film) => {
 };
 
 export const deleteMovie = async (movieId) => {
-  console.log(movieId);
   return fetch(`${BASE_URL_API}/movies/${movieId}`, {
     method: 'DELETE',
-    headers: AUTH_HEADERS,
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+      'Content-Type': 'application/json',
+    },
     // }).then((res) => (res.ok ? res.json() : Promise.reject(`Произошла ошибка: ${res.status}`)));
   }).then((res) => (res.ok ? res.json() : Promise.reject(`Произошла ошибка: ${res.status}`)));
 };

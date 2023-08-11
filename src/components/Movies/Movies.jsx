@@ -45,6 +45,7 @@ const Movies = ({
     } else {
       setCountFilms(MOBILE_COUNT_FILMS);
     }
+    console.log(countFilms);
   }, [windowWidth]);
 
   const etcFilms = () => {

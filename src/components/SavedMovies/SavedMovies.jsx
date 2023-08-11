@@ -29,7 +29,7 @@ const SavedMovies = ({ movies, handleDeleteMovie, isPreloaderVisible, pathname, 
   const [searchTextInputValue, setSearchTextInputValue] = useState('');
   const [searchFilmsResult, setSearchFilmsResult] = useState(
     movies.filter((movie) => {
-      return movie.duration <= DURATION_SHORT_FILM;
+      return movie.duration > DURATION_SHORT_FILM;
     }),
   );
   const [isShortVideos, setIsShortVideos] = useState(false);

@@ -6,7 +6,7 @@ export const AUTH_HEADERS = {
 };
 
 export const COMP_SCREEN_WIDTH = 1280;
-export const TABLET_SCREEN_WIDTH = 709;
+export const TABLET_SCREEN_WIDTH = 715;
 export const COMP_COUNT_FILMS = 12;
 export const TABLET_COUNT_FILMS = 8;
 export const MOBILE_COUNT_FILMS = 5;

@@ -168,7 +168,6 @@ function App() {
       setIsInfoToolTipVisible(true);
       setInfoMessage('Произошла ошибка при попытке запроса информации о пользователе!');
       await handleLogOut();
-      // navigate('/signin', { replace: true });
     } finally {
       setIsLoadingVisible(false);
       isInfoToolTipVisible &&
@@ -305,7 +304,6 @@ function App() {
     nameEN,
     movieId,
   }) {
-    //setIsLoadingVisible(true);
     try {
       const response = await createMovie({
         country,
@@ -326,7 +324,6 @@ function App() {
       setIsInfoToolTipVisible(true);
       setInfoMessage('Произошла ошибка при попытке добавления фильма в избранное!');
     } finally {
-      //setIsLoadingVisible(false);
       isInfoToolTipVisible &&
         setTimeout(() => {
           setIsInfoToolTipVisible(false);
@@ -357,7 +354,6 @@ function App() {
   }
 
   async function handleDeleteMovie(movieId) {
-    //setIsLoadingVisible(true);
     try {
       const getResponse = await getMovies();
       const findedMovieId = getResponse.filter((movie) => movie.movieId === movieId)[0]._id;
@@ -367,7 +363,6 @@ function App() {
       setIsInfoToolTipVisible(true);
       setInfoMessage('Произошла ошибка при попытке удаления фильма!');
     } finally {
-      //setIsLoadingVisible(false);
       isInfoToolTipVisible &&
         setTimeout(() => {
           setIsInfoToolTipVisible(false);
@@ -461,7 +456,7 @@ function App() {
               element={<Register isLogedIn={logedIn} handleRegisterUser={handleRegisterUser} />}
             />
           )}
-          <Route path="*" element={<NotFound />} />
+          <Route path="*" element={<NotFound navigate={navigate}/>} />
         </Routes>
         {(pathname === '/movies' || pathname === '/saved-movies' || pathname === '/') && <Footer />}
       </div>

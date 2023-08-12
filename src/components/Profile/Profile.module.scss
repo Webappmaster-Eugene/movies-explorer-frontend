@@ -210,15 +210,21 @@
 
       .popup__buttonSave{
     
-        &:disabled{
-          color: rgba(70, 70, 70, 0.688);
-          cursor: default;
+        // &:disabled{
+        //   color: rgba(70, 70, 70, 0.688);
+        //   cursor: default;
 
           &:hover {
             opacity: 1;
           }
-        }
       }
+
+      .popup__buttonSave_disabled{
+        color: rgba(70, 70, 70, 0.688);
+        cursor: default;
+      }
+
+
 
       .popup__buttonClose{
         @include classicText($fsCaptionFooter, $fwMedium, $lhCaptionFooter, $redColor, center);

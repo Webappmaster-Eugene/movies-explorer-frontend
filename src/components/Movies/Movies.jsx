@@ -6,52 +6,87 @@ import SearchForm from '../SearchForm';
 import MoviesCardList from '../MoviesCardList';
 import Preloader from '../Preloader';
 
+import {
+  COMP_SCREEN_WIDTH,
+  TABLET_SCREEN_WIDTH,
+  COMP_COUNT_FILMS,
+  TABLET_COUNT_FILMS,
+  MOBILE_COUNT_FILMS,
+  COMP_ETC_COUNT_FILMS,
+  MOBILE_ETC_COUNT_FILMS,
+} from '../../utils/consts';
+
 import styles from './Movies.module.scss';
 
-const Movies = ({ movies }) => {
-  const [preloader, setPreloader] = useState(false);
+const Movies = ({
+  movies,
+  handleCreateMovie,
+  handleDeleteMovie,
+  savedMovies,
+  isPreloaderVisible,
+  searchTextInputValue,
+  setSearchTextInputValue,
+  searchFilmsResult,
+  setSearchFilmsResult,
+  pathname,
+  isShortVideos,
+  onChangeToggle,
+  onClickButtonSearch,
+  logedIn,
+}) => {
   const [countFilms, setCountFilms] = useState(0);
   const windowWidth = useResize().width;
 
   useEffect(() => {
-    if (windowWidth >= 1280) {
-      setCountFilms(12);
-    } else if (windowWidth < 1280 && windowWidth >= 768) {
-      setCountFilms(8);
+    if (windowWidth >= COMP_SCREEN_WIDTH) {
+      setCountFilms(COMP_COUNT_FILMS);
+    } else if (windowWidth < COMP_SCREEN_WIDTH && windowWidth >= TABLET_SCREEN_WIDTH) {
+      setCountFilms(TABLET_COUNT_FILMS);
     } else {
-      setCountFilms(5);
+      setCountFilms(MOBILE_COUNT_FILMS);
     }
+    console.log(countFilms);
   }, [windowWidth]);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setPreloader(true);
-    }, 0);
-  }, []);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setPreloader(false);
-    }, 4000);
-  }, []);
-
   const etcFilms = () => {
-    if (windowWidth >= 1280) {
-      setCountFilms(countFilms + 3);
-    } else if (windowWidth < 1280 && windowWidth >= 768) {
-      setCountFilms(countFilms + 2);
+    if (windowWidth >= COMP_SCREEN_WIDTH) {
+      setCountFilms(countFilms + COMP_ETC_COUNT_FILMS);
+    } else if (windowWidth < COMP_SCREEN_WIDTH && windowWidth >= TABLET_SCREEN_WIDTH) {
+      setCountFilms(countFilms + MOBILE_ETC_COUNT_FILMS);
     } else {
-      setCountFilms(countFilms + 1);
+      setCountFilms(countFilms + MOBILE_ETC_COUNT_FILMS);
     }
+  };
+
+  useEffect(() => {
+    localStorage.setItem('searchFilmsResult', JSON.stringify(searchFilmsResult));
+  }, [searchFilmsResult]);
+
+  const onChangeSearch = (event) => {
+    setSearchTextInputValue(event.target.value.toLowerCase().replaceAll(' ', ''));
   };
 
   return (
     <div className={styles.movies}>
-      <SearchForm />
-      {preloader ? (
+      <SearchForm
+        isShortVideos={isShortVideos}
+        onClickButtonSearch={onClickButtonSearch}
+        onChangeToggle={onChangeToggle}
+        onChangeSearch={onChangeSearch}
+        pathname={pathname}
+        searchTextInputValue={searchTextInputValue}
+      />
+      {isPreloaderVisible ? (
         <Preloader />
       ) : (
-        <MoviesCardList etcFilms={etcFilms} countFilms={countFilms} movies={movies} />
+        <MoviesCardList
+          etcFilms={etcFilms}
+          countFilms={countFilms}
+          movies={searchFilmsResult ?? JSON.parse(localStorage.getItem('searchFilmsResult'))}
+          handleCreateMovie={handleCreateMovie}
+          handleDeleteMovie={handleDeleteMovie}
+          savedMovies={savedMovies}
+        />
       )}
     </div>
   );

@@ -139,6 +139,11 @@
     }
 }
 
+.register__button_disabled{
+  background-color: #666666;
+  cursor: default;
+}
+
 .register__buttonEntry{
   @include classicText($fsText, $fwRegular, $lhCaption, $grayColor, left);
 

@@ -1,11 +1,18 @@
 @import "../../vars.scss";
 
 .card{
+  all: unset;
   @include classicDiv(column);
   max-height: 271px;
   width: 364px;
   background-color: #FDFDFD;
   box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+
+  &:hover {
+    opacity: .7;
+  }
 
   @media screen and (max-width: 940px) {
     width: 339px;
@@ -66,7 +73,8 @@
 
   .card__right_active{
     background-color: #2BE080;
-    border-radius: 36px;
+    min-width: 30px;
+    min-height: 30px;
   }
 }
 

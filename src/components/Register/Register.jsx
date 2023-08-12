@@ -8,14 +8,14 @@ import { mailTester, passwordTester } from '../../utils/regEx';
 
 import styles from './Register.module.scss';
 
-const Register = ({ isLogedIn, userInfo, setUserInfo, setLogedIn }) => {
+const Register = ({ isLogedIn, handleRegisterUser }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
     if (isLogedIn) {
       navigate('/movies', { replace: true });
     }
-  });
+  }, []);
 
   const [userName, setUserName] = useState('');
   const [userPassword, setUserPassword] = useState('');
@@ -23,9 +23,19 @@ const Register = ({ isLogedIn, userInfo, setUserInfo, setLogedIn }) => {
   const [isErrorUserPassword, setIsErrorUserPassword] = useState(false);
   const [isErrorUserName, setIsErrorUserName] = useState(false);
   const [isErrorUserEmail, setIsErrorUserEmail] = useState(false);
-  const [errorUserPassword, setErrorUserPassword] = useState('');
-  const [errorUserName, setErrorUserName] = useState('');
-  const [errorUserEmail, setErrorUserEmail] = useState('');
+  const [errorUserPassword, setErrorUserPassword] = useState('Вы не ввели пароль');
+  const [errorUserName, setErrorUserName] = useState('Вы не ввели имя');
+  const [errorUserEmail, setErrorUserEmail] = useState('Вы не ввели почту');
+
+  const [isButtonDisbled, setIsButtonDisbled] = useState(true);
+
+  useEffect(() => {
+    if (!isErrorUserPassword && !isErrorUserName && !isErrorUserEmail) {
+      setIsButtonDisbled(false);
+    } else {
+      setIsButtonDisbled(true);
+    }
+  }, [userPassword, userEmail, userName]);
 
   const onChangeEmail = (event) => {
     setUserEmail(event.target.value);
@@ -67,7 +77,7 @@ const Register = ({ isLogedIn, userInfo, setUserInfo, setLogedIn }) => {
 
   const onChangeName = (event) => {
     setUserName(event.target.value);
-    console.log(userName);
+
     if (event.target.value.length === 0) {
       setIsErrorUserName(true);
       setErrorUserName('Вы не ввели Имя');
@@ -82,15 +92,13 @@ const Register = ({ isLogedIn, userInfo, setUserInfo, setLogedIn }) => {
 
   const onSignUp = (event) => {
     event.preventDefault();
-    if (userPassword === userInfo.password && userEmail === userInfo.email) {
-      alert('Данный пользователь уже существует, зайдите под данной почтой на странице входа!');
-      navigate('/signin', { replace: true });
-    } else {
-      setUserInfo({ name: userName, email: userEmail, password: userPassword });
-      setLogedIn(true);
-      navigate('/movies', { replace: true });
-    }
+    console.log({ email: userEmail, password: userPassword, name: userName });
+    handleRegisterUser({ email: userEmail, password: userPassword, name: userName });
   };
+
+  useEffect(() => {
+    setIsButtonDisbled(true);
+  }, []);
 
   return (
     <section className={styles.register}>
@@ -111,7 +119,7 @@ const Register = ({ isLogedIn, userInfo, setUserInfo, setLogedIn }) => {
               name="text"
               type="text"
               className={`${styles.inputElement__input} ${styles.inputElement__input_name}`}
-              placeholder="Виталий"
+              placeholder="Имя"
               value={userName}
               autoComplete="off"
               onChange={onChangeName}
@@ -168,7 +176,13 @@ const Register = ({ isLogedIn, userInfo, setUserInfo, setLogedIn }) => {
         </div>
 
         <div className={styles.register__buttons}>
-          <button type="button" onClick={onSignUp} className={`${styles.register__button}`}>
+          <button
+            type="button"
+            onClick={onSignUp}
+            className={`${styles.register__button} ${
+              isButtonDisbled && styles.register__button_disabled
+            }`}
+            disabled={isButtonDisbled}>
             Зарегистрироваться
           </button>
 

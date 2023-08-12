@@ -7,7 +7,7 @@ import { mailTester, passwordTester } from '../../utils/regEx';
 
 import styles from './Login.module.scss';
 
-const Login = ({ isLogedIn, userInfo, setLogedIn }) => {
+const Login = ({ isLogedIn, handleLoginUser, allMovies, handleGetAllMovies }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,8 +20,18 @@ const Login = ({ isLogedIn, userInfo, setLogedIn }) => {
   const [userEmail, setUserEmail] = useState('');
   const [isErrorUserPassword, setIsErrorUserPassword] = useState(false);
   const [isErrorUserEmail, setIsErrorUserEmail] = useState(false);
-  const [errorUserPassword, setErrorUserPassword] = useState('');
-  const [errorUserEmail, setErrorUserEmail] = useState('');
+  const [errorUserPassword, setErrorUserPassword] = useState('Вы не ввели пароль');
+  const [errorUserEmail, setErrorUserEmail] = useState('Вы не ввели почту');
+
+  const [isButtonDisbled, setIsButtonDisbled] = useState(true);
+
+  useEffect(() => {
+    if (!isErrorUserPassword && !isErrorUserEmail) {
+      setIsButtonDisbled(false);
+    } else {
+      setIsButtonDisbled(true);
+    }
+  }, [userPassword, userEmail]);
 
   const onChangeEmail = (event) => {
     setUserEmail(event.target.value);
@@ -63,13 +73,15 @@ const Login = ({ isLogedIn, userInfo, setLogedIn }) => {
 
   const onLogIn = (event) => {
     event.preventDefault();
-    if (userPassword === userInfo.password && userEmail === userInfo.email) {
-      setLogedIn(true);
-      navigate('/movies', { replace: true });
-    } else {
-      navigate('/signup', { replace: true });
-    }
+
+    handleLoginUser({ email: userEmail, password: userPassword }).then(() => {
+      handleGetAllMovies();
+    });
   };
+
+  useEffect(() => {
+    setIsButtonDisbled(true);
+  }, []);
 
   return (
     <section className={styles.register}>
@@ -127,10 +139,12 @@ const Login = ({ isLogedIn, userInfo, setLogedIn }) => {
 
         <div className={styles.register__buttons}>
           <button
-            disabled={isErrorUserPassword || isErrorUserEmail}
+            disabled={isButtonDisbled}
             onClick={onLogIn}
             type="button"
-            className={`${styles.register__button}`}>
+            className={`${styles.register__button} ${
+              isButtonDisbled && styles.register__button_disabled
+            }`}>
             Войти
           </button>
 

@@ -20,7 +20,7 @@ const Footer = () => {
             className={styles.footer__link}
             target="_blank"
             rel="noreferrer"
-            href="https://github.com/Numarta">
+            href="https://github.com">
             GitHub
           </a>
         </div>

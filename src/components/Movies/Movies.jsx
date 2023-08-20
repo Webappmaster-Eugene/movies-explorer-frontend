@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react';
 
 import useResize from 'use-resize';
@@ -5,16 +7,6 @@ import useResize from 'use-resize';
 import SearchForm from '../SearchForm';
 import MoviesCardList from '../MoviesCardList';
 import Preloader from '../Preloader';
-
-import {
-  COMP_SCREEN_WIDTH,
-  TABLET_SCREEN_WIDTH,
-  COMP_COUNT_FILMS,
-  TABLET_COUNT_FILMS,
-  MOBILE_COUNT_FILMS,
-  COMP_ETC_COUNT_FILMS,
-  MOBILE_ETC_COUNT_FILMS,
-} from '../../utils/consts';
 
 import styles from './Movies.module.scss';
 
@@ -38,23 +30,22 @@ const Movies = ({
   const windowWidth = useResize().width;
 
   useEffect(() => {
-    if (windowWidth >= COMP_SCREEN_WIDTH) {
-      setCountFilms(COMP_COUNT_FILMS);
-    } else if (windowWidth < COMP_SCREEN_WIDTH && windowWidth >= TABLET_SCREEN_WIDTH) {
-      setCountFilms(TABLET_COUNT_FILMS);
+    if (windowWidth >= 1280) {
+      setCountFilms(8);
+    } else if (windowWidth < 1280 && windowWidth >= 780) {
+      setCountFilms(5);
     } else {
-      setCountFilms(MOBILE_COUNT_FILMS);
+      setCountFilms(5);
     }
-    console.log(countFilms);
   }, [windowWidth]);
 
   const etcFilms = () => {
-    if (windowWidth >= COMP_SCREEN_WIDTH) {
-      setCountFilms(countFilms + COMP_ETC_COUNT_FILMS);
-    } else if (windowWidth < COMP_SCREEN_WIDTH && windowWidth >= TABLET_SCREEN_WIDTH) {
-      setCountFilms(countFilms + MOBILE_ETC_COUNT_FILMS);
+    if (windowWidth >= 1280) {
+      setCountFilms(countFilms + 3);
+    } else if (windowWidth < 1280 && windowWidth >= 768) {
+      setCountFilms(countFilms + 2);
     } else {
-      setCountFilms(countFilms + MOBILE_ETC_COUNT_FILMS);
+      setCountFilms(countFilms + 1);
     }
   };
 

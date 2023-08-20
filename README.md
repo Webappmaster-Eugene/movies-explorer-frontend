@@ -1,22 +1,17 @@
 # Проект: VideoCollector - авторизация, регистрация, контент, взаимодействие с сервером
 
-Ссылка на PR: https://github.com/Numarta/movies-explorer-frontend/pull/5
-Ссылка на репо: https://github.com/Numarta/movies-explorer-frontend.git
+Ссылка на PR: https://github.com/OrkhanRakhmetov/movies-explorer-frontend/pull/3
+Ссылка на репо: https://github.com/OrkhanRakhmetov/movies-explorer-frontend
 Ссылка на фронт сайта на сервере: numart.nomoredomains.work
-Проверено по чек-листу и полностью готово к проверке! Баги поправлены, фичи добавлены. Благодарю!
+Проверено по чек-листу.
 
-Это фронтенд проекта VideoCollector на React, HTML5, CSS3.
+Это фронтенд проекта
 
-Конкретно в проекте использовались: функционал на React (CRA, Router, generate-react-cli, index.js для прокидывания компонентов, eslint), для стилей - SCSS (css-modules, файл vars.scss для общего доступа ко всем константам, миксинам и общим стилям).
+Конкретно в проекте использовались: функционал на React (CRA, Router, index.js для прокидывания компонентов, eslint), для стилей - SCSS (css-modules, файл vars.scss для общего доступа ко всем константам, миксинам и общим стилям).
 
 Тут добавлены многие и многие фичи, некоторый допфункционал вроде лоадера, бургера и адаптивной версии форм.
-Домен для фронтенда дипломного проекта: numart.nomoredomains.work
-IP-сервера для обращений и тестирования: 158.160.41.95
+Д
 Полностью работоспособная верстка для приложения создания коллекции фильмов.
-Макет в Figma: https://www.figma.com/file/ZcvzJ5ZZ4iUFtCcw5CGhCL/Diploma-FINAL-VERSION?type=design&node-id=891%3A3857&mode=design&t=LJl8wLl6LMRQPSGP-1
-Kanban разработки: https://github.com/users/Numarta/projects/1/views/1
-
-Ссылка на .fig макет на Яндекс.Диск для проверки - https://disk.yandex.lt/d/jkJwAxqFHoFjLQ
 
 `/build` — папка со всеми файлами и страницами для итогового размещения файлов
 `/public` — папка для работы CRA по дефолту
@@ -28,14 +23,9 @@ Kanban разработки: https://github.com/users/Numarta/projects/1/views/1
 
 ### Содержание
 
-- Ссылка на сайт
 - Описание
 - Нюансы
 - Итог
-
-**Ссылка на сайт**
-
-- [Это ссылка на мой сайт на сервере](https://numart.nomoredomains.work)
 
 **Описание**
 

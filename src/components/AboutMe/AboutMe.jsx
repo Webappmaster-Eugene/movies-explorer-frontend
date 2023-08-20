@@ -23,7 +23,7 @@ const AboutMe = () => {
             className={styles.aboutme__link}
             target="_blank"
             rel="noreferrer"
-            href="https://github.com/Numarta">
+            href="https://github.com">
             GitHub
           </a>
         </div>

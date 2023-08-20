@@ -7,7 +7,6 @@ const NotFound = ({ navigate }) => {
       <p className={`${styles.notfound__text}`}>Страница не найдена</p>
       <button
         onClick={(event) => {
-          event.preventDefault();
           navigate(-1);
         }}
         type="button"

@@ -12,8 +12,6 @@ import styles from './Profile.module.scss';
 const Profile = ({
   handleUpdateUser,
   handleLogOut,
-  setInfoMessage,
-  setIsInfoToolTipVisible,
   logedIn,
 }) => {
   const [isPopupOpened, setIsPopupOpened] = useState(false);

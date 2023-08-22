@@ -4,7 +4,6 @@ const Footer = () => {
   return (
     <footer className={styles.footer}>
       <p className={styles.sources}>Учебный проект Яндекс.Практикум х BeatFilm.</p>
-      {/* <div className={styles.line}></div> */}
       <div className={styles.footer__bottom}>
         <div className={styles.copyright}>© {new Date().getFullYear()}</div>
 

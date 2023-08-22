@@ -43,7 +43,7 @@ function App() {
   const [isPreloaderVisible, setIsPreloaderVisible] = React.useState(false);
 
   const [logedIn, setLogedIn] = React.useState(false);
-  const [userInfo, setUserInfo] = React.useState({ email: '', name: '' });
+  const [userInfo, setUserInfo] = React.useState({ id: '', email: '', name: '' });
 
   const [savedMovies, setSavedMovies] = React.useState([]);
   const [allMovies, setAllMovies] = React.useState([]);
@@ -96,8 +96,33 @@ function App() {
     localStorage.setItem('searchFilmsResult', JSON.stringify(searchFilmsResult));
   }, [searchFilmsResult]);
 
+  async function compareToken(TOKEN) {
+    if (TOKEN && logedIn) {
+      try {
+        await getUserInfo();
+      } catch {
+        await handleLogOut();
+      }
+    }
+  }
+
   useEffect(() => {
     const TOKEN = localStorage.getItem('jwt');
+    if (TOKEN) {
+      handleGetMovies();
+    }
+  }, [userInfo]);
+
+  useEffect(() => {
+    const TOKEN = localStorage.getItem('jwt');
+    if (TOKEN && logedIn) {
+      compareToken(TOKEN);
+    }
+  });
+
+  useEffect(() => {
+    const TOKEN = localStorage.getItem('jwt');
+
     if (TOKEN) {
       Promise.all([handleGetInfoUser(), handleGetAllMovies(), handleGetMovies()]).then(() => {
         if (localStorage.getItem('jwt')) {
@@ -162,7 +187,7 @@ function App() {
     setIsLoadingVisible(true);
     try {
       const response = await getUserInfo();
-      setUserInfo({ email: response.email, name: response.name });
+      setUserInfo({ id: response._id, email: response.email, name: response.name });
     } catch (err) {
       console.log(err);
       setIsInfoToolTipVisible(true);
@@ -184,7 +209,6 @@ function App() {
       const response = await loginUser({ email, password });
       const token = await response.token;
       localStorage.setItem('jwt', token);
-      localStorage.setItem('logedIn', 'logedIn');
       setLogedIn(true);
       await handleGetInfoUser();
       await handleGetMovies();
@@ -223,7 +247,6 @@ function App() {
       const token = await response2.token;
       localStorage.setItem('jwt', token);
       setLogedIn(true);
-      localStorage.setItem('logedIn', 'logedIn');
       await handleGetInfoUser(token);
       navigate('/movies', { replace: true });
     } catch (err) {
@@ -272,7 +295,6 @@ function App() {
       localStorage.removeItem('searchTextInputValue');
       localStorage.removeItem('searchFilmsResult');
       localStorage.removeItem('isShortVideos');
-      localStorage.removeItem('logedIn');
 
       setSearchFilmsResult([]);
       setSearchTextInputValue('');
@@ -339,7 +361,8 @@ function App() {
     try {
       setIsPreloaderVisible(true);
       const response = await getMovies();
-      setSavedMovies(response);
+      //await handleGetInfoUser();
+      setSavedMovies(response.filter((movie) => movie.owner === userInfo.id));
     } catch (err) {
       console.log(err);
       setIsInfoToolTipVisible(true);
@@ -438,25 +461,22 @@ function App() {
               />
             }
           />
-          {!logedIn && (
-            <Route
-              path="/signin"
-              element={
-                <Login
-                  isLogedIn={logedIn}
-                  handleLoginUser={handleLoginUser}
-                  handleGetAllMovies={handleGetAllMovies}
-                  allMovies={allMovies}
-                />
-              }
-            />
-          )}
-          {!logedIn && (
-            <Route
-              path="/signup"
-              element={<Register isLogedIn={logedIn} handleRegisterUser={handleRegisterUser} />}
-            />
-          )}
+
+          <Route
+            path="/signin"
+            element={
+              <Login
+                isLogedIn={logedIn}
+                handleLoginUser={handleLoginUser}
+                handleGetAllMovies={handleGetAllMovies}
+                allMovies={allMovies}
+              />
+            }
+          />
+          <Route
+            path="/signup"
+            element={<Register isLogedIn={logedIn} handleRegisterUser={handleRegisterUser} />}
+          />
           <Route path="*" element={<NotFound navigate={navigate} />} />
         </Routes>
         {(pathname === '/movies' || pathname === '/saved-movies' || pathname === '/') && <Footer />}

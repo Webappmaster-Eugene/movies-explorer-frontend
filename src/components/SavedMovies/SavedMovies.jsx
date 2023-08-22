@@ -96,7 +96,6 @@ const SavedMovies = ({ movies, handleDeleteMovie, isPreloaderVisible, pathname, 
 
   const onClickButtonSearch = (event) => {
     event.preventDefault();
-    console.log(11);
     const searchTextModified = searchTextInputValue.toLowerCase().replaceAll(' ', '');
 
     setSearchFilmsResult(

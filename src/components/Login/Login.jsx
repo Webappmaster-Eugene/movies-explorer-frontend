@@ -7,14 +7,14 @@ import { mailTester, passwordTester } from '../../utils/regEx';
 
 import styles from './Login.module.scss';
 
-const Login = ({ isLogedIn, handleLoginUser, allMovies, handleGetAllMovies }) => {
+const Login = ({ isLogedIn, handleLoginUser, handleGetAllMovies }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
     if (isLogedIn) {
       navigate('/movies', { replace: true });
     }
-  }, []);
+  });
 
   const [userPassword, setUserPassword] = useState('');
   const [userEmail, setUserEmail] = useState('');

@@ -92,7 +92,6 @@ const Register = ({ isLogedIn, handleRegisterUser }) => {
 
   const onSignUp = (event) => {
     event.preventDefault();
-    console.log({ email: userEmail, password: userPassword, name: userName });
     handleRegisterUser({ email: userEmail, password: userPassword, name: userName });
   };
 

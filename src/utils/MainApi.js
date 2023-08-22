@@ -1,5 +1,4 @@
 import { BASE_URL_API } from './consts';
-import { AUTH_HEADERS } from './consts';
 
 //USERS
 
@@ -64,12 +63,8 @@ export const getMovies = async () => {
       Authorization: `Bearer ${localStorage.getItem('jwt')}`,
       'Content-Type': 'application/json',
     },
-    // }).then((res) => ({res.ok ? res.json() : Promise.reject(`Произошла ошибка: ${res.status}`)));
   });
   return response.ok ? response.json() : [];
-  // .then((res) => {
-  //   return res.ok ? res.json() : [];
-  // });
 };
 
 export const createMovie = async (film) => {
@@ -102,6 +97,5 @@ export const deleteMovie = async (movieId) => {
       Authorization: `Bearer ${localStorage.getItem('jwt')}`,
       'Content-Type': 'application/json',
     },
-    // }).then((res) => (res.ok ? res.json() : Promise.reject(`Произошла ошибка: ${res.status}`)));
   }).then((res) => (res.ok ? res.json() : Promise.reject(`Произошла ошибка: ${res.status}`)));
 };

@@ -19,7 +19,6 @@ import {
 import styles from './Movies.module.scss';
 
 const Movies = ({
-  movies,
   handleCreateMovie,
   handleDeleteMovie,
   savedMovies,
@@ -27,8 +26,6 @@ const Movies = ({
   searchTextInputValue,
   setSearchTextInputValue,
   searchFilmsResult,
-  setSearchFilmsResult,
-  pathname,
   isShortVideos,
   onChangeToggle,
   onClickButtonSearch,
@@ -45,7 +42,6 @@ const Movies = ({
     } else {
       setCountFilms(MOBILE_COUNT_FILMS);
     }
-    console.log(countFilms);
   }, [windowWidth]);
 
   const etcFilms = () => {
@@ -63,7 +59,7 @@ const Movies = ({
   }, [searchFilmsResult]);
 
   const onChangeSearch = (event) => {
-    setSearchTextInputValue(event.target.value.toLowerCase().replaceAll(' ', ''));
+    setSearchTextInputValue(event.target.value);
   };
 
   return (
@@ -73,7 +69,6 @@ const Movies = ({
         onClickButtonSearch={onClickButtonSearch}
         onChangeToggle={onChangeToggle}
         onChangeSearch={onChangeSearch}
-        pathname={pathname}
         searchTextInputValue={searchTextInputValue}
       />
       {isPreloaderVisible ? (

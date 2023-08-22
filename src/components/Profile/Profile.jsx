@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import React from 'react';
-//import { useNavigate } from 'react-router-dom';
 
 import { mailTester } from '../../utils/regEx';
 
@@ -27,7 +26,7 @@ const Profile = ({
 
   const context = React.useContext(CurrentUserContext);
 
-  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   useEffect(() => {
     setUserName(context.name);
@@ -49,12 +48,10 @@ const Profile = ({
   useEffect(() => {
     if (context.name === userName && context.email === userEmail) {
       setIsButtonDisabled(true);
-    } else {
+    } else if (!isErrorUserName && !isErrorUserEmail) {
       setIsButtonDisabled(false);
     }
   }, [userName, userEmail, context.name, context.email]);
-
-  //const navigate = useNavigate();
 
   const onChangeName = (event) => {
     setUserName(event.target.value);
@@ -90,12 +87,6 @@ const Profile = ({
 
   const onSaveChanges = () => {
     handleUpdateUser({ name: userName, email: userEmail });
-    setInfoMessage('Вы успешно изменили настройки профиля!');
-    setIsInfoToolTipVisible(true);
-    setTimeout(() => {
-      setIsInfoToolTipVisible(false);
-    }, 3500);
-
     onEditClick();
   };
 
@@ -103,6 +94,11 @@ const Profile = ({
     setIsPopupOpened(!isPopupOpened);
     setUserName(context.name);
     setUserEmail(context.email);
+
+    setIsErrorUserEmail(false);
+    setErrorUserEmail('');
+    setErrorUserName('');
+    setIsErrorUserName(false);
   };
 
   const signout = () => {

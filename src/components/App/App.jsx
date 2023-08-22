@@ -62,20 +62,23 @@ function App() {
 
   const onChangeToggle = () => {
     setIsShortVideos((prevState) => !prevState);
+
+    const searchTextModified = searchTextInputValue.toLowerCase().replaceAll(' ', '');
+
     setSearchFilmsResult(
       allMovies.filter((movie) => {
-        if (CYRILLIC_REGEX.test(searchTextInputValue)) {
+        if (CYRILLIC_REGEX.test(searchTextModified)) {
           return !isShortVideos
             ? movie.duration <= DURATION_SHORT_FILM &&
-                movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue)
+                movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextModified)
             : movie.duration > DURATION_SHORT_FILM &&
-                movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue);
+                movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextModified);
         } else {
           return !isShortVideos
             ? movie.duration <= DURATION_SHORT_FILM &&
-                movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue)
+                movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextModified)
             : movie.duration > DURATION_SHORT_FILM &&
-                movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue);
+                movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextModified);
         }
       }),
     );
@@ -95,7 +98,6 @@ function App() {
 
   useEffect(() => {
     const TOKEN = localStorage.getItem('jwt');
-
     if (TOKEN) {
       Promise.all([handleGetInfoUser(), handleGetAllMovies(), handleGetMovies()]).then(() => {
         if (localStorage.getItem('jwt')) {
@@ -114,26 +116,24 @@ function App() {
 
   const onClickButtonSearch = (event) => {
     event.preventDefault();
-
+    const searchTextModified = searchTextInputValue.toLowerCase().replaceAll(' ', '');
     setSearchFilmsResult(
       allMovies.filter((movie) => {
-        if (CYRILLIC_REGEX.test(searchTextInputValue)) {
+        if (CYRILLIC_REGEX.test(searchTextModified)) {
           return isShortVideos
             ? movie.duration <= DURATION_SHORT_FILM &&
-                movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue)
+                movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextModified)
             : movie.duration > DURATION_SHORT_FILM &&
-                movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue);
+                movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextModified);
         } else {
           return isShortVideos
             ? movie.duration <= DURATION_SHORT_FILM &&
-                movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue)
+                movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextModified)
             : movie.duration > DURATION_SHORT_FILM &&
-                movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue);
+                movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextModified);
         }
       }),
     );
-
-    setSearchTextInputValue(searchTextInputValue);
   };
 
   //Получить все фильмы из стороннего API для дальнейшей работы с ними
@@ -247,6 +247,8 @@ function App() {
       console.log('Запуск');
       const response = await updateUser({ email, name });
       setUserInfo({ email: response.email, name: response.name });
+      setInfoMessage('Вы успешно изменили настройки профиля!');
+      setIsInfoToolTipVisible(true);
     } catch (err) {
       console.log(err);
       setIsInfoToolTipVisible(true);
@@ -355,9 +357,8 @@ function App() {
 
   async function handleDeleteMovie(movieId) {
     try {
-      const getResponse = await getMovies();
-      const findedMovieId = getResponse.filter((movie) => movie.movieId === movieId)[0]._id;
-      setSavedMovies([...getResponse.filter((movie) => movie.movieId !== movieId)]);
+      const findedMovieId = savedMovies.filter((movie) => movie.movieId === movieId)[0]._id;
+      setSavedMovies([...savedMovies.filter((movie) => movie.movieId !== movieId)]);
       const response = await deleteMovie(findedMovieId);
     } catch (err) {
       setIsInfoToolTipVisible(true);
@@ -456,7 +457,7 @@ function App() {
               element={<Register isLogedIn={logedIn} handleRegisterUser={handleRegisterUser} />}
             />
           )}
-          <Route path="*" element={<NotFound navigate={navigate}/>} />
+          <Route path="*" element={<NotFound navigate={navigate} />} />
         </Routes>
         {(pathname === '/movies' || pathname === '/saved-movies' || pathname === '/') && <Footer />}
       </div>

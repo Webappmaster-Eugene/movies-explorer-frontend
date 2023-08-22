@@ -8,7 +8,6 @@ const SearchForm = ({
   onChangeSearch,
   onChangeToggle,
   searchTextInputValue,
-  pathname,
 }) => {
   return (
     <div className={styles.searchform}>

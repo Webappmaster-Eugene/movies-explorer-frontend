@@ -69,21 +69,23 @@ const SavedMovies = ({ movies, handleDeleteMovie, isPreloaderVisible, pathname, 
   }, []);
 
   useEffect(() => {
+    const searchTextModified = searchTextInputValue.toLowerCase().replaceAll(' ', '');
+
     if (isMountedIsShortVideos.isMounted) {
       setSearchFilmsResult(
         movies.filter((movie) => {
-          if (CYRILLIC_REGEX.test(searchTextInputValue)) {
+          if (CYRILLIC_REGEX.test(searchTextModified)) {
             return isShortVideos
               ? movie.duration <= DURATION_SHORT_FILM &&
-                  movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue)
+                  movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextModified)
               : movie.duration > DURATION_SHORT_FILM &&
-                  movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue);
+                  movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextModified);
           } else {
             return isShortVideos
               ? movie.duration <= DURATION_SHORT_FILM &&
-                  movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue)
+                  movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextModified)
               : movie.duration > DURATION_SHORT_FILM &&
-                  movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue);
+                  movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextModified);
           }
         }),
       );
@@ -94,30 +96,30 @@ const SavedMovies = ({ movies, handleDeleteMovie, isPreloaderVisible, pathname, 
 
   const onClickButtonSearch = (event) => {
     event.preventDefault();
+    console.log(11);
+    const searchTextModified = searchTextInputValue.toLowerCase().replaceAll(' ', '');
 
     setSearchFilmsResult(
       movies.filter((movie) => {
-        if (CYRILLIC_REGEX.test(searchTextInputValue)) {
+        if (CYRILLIC_REGEX.test(searchTextModified)) {
           return isShortVideos
             ? movie.duration <= DURATION_SHORT_FILM &&
-                movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue)
+                movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextModified)
             : movie.duration > DURATION_SHORT_FILM &&
-                movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue);
+                movie.nameRU.toLowerCase().replaceAll(' ', '').includes(searchTextModified);
         } else {
           return isShortVideos
             ? movie.duration <= DURATION_SHORT_FILM &&
-                movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue)
+                movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextModified)
             : movie.duration > DURATION_SHORT_FILM &&
-                movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextInputValue);
+                movie.nameEN.toLowerCase().replaceAll(' ', '').includes(searchTextModified);
         }
       }),
     );
-
-    setSearchTextInputValue(searchTextInputValue);
   };
 
   const onChangeSearch = (event) => {
-    setSearchTextInputValue(event.target.value.toLowerCase().replaceAll(' ', ''));
+    setSearchTextInputValue(event.target.value);
   };
 
   const onChangeToggle = () => {
